@@ -18,7 +18,7 @@
     <string name="preference_header">Setting</string>
     <string name="start_on_boot_yes">The service will start on boot</string>
     <string name="start_on_boot_no">The service will NOT start on boot</string>
-    <string name="size_unit">%1$d sp</string>
+    <string name="size_unit" translatable="false">%1$d sp</string>
 
     <string name="title_start_on_boot">Start Service on boot</string>
 
@@ -43,7 +43,7 @@
         <item >Left-Bottom</item>
         <item >Right-Bottom</item>
     </string-array>
-    <string-array name="values_layout">
+    <string-array name="values_layout" translatable="false">
         <item >51</item>
         <item >53</item>
         <item >83</item>
@@ -54,12 +54,12 @@
         <item >Celsius (°C)</item>
         <item >Fahrenheit (°F)</item>
     </string-array>
-    <string-array name="values_temperature_unit">
+    <string-array name="values_temperature_unit" translatable="false">
         <item >C</item>
         <item >F</item>
     </string-array>
 
-    <string-array name="entries_text_size">
+    <string-array name="entries_text_size" translatable="false">
         <item >6 sp</item>
         <item >7 sp</item>
         <item >8 sp</item>
@@ -156,7 +156,7 @@
         <item >99 sp</item>
         <item >100 sp</item>
     </string-array>
-    <string-array name="values_text_size">
+    <string-array name="values_text_size" translatable="false">
         <item >6</item>
         <item >7</item>
         <item >8</item>
@@ -255,7 +255,7 @@
     </string-array>
 
 
-    <string name="default_temperature_unit">C</string>
+    <string name="default_temperature_unit" translatable="false">C</string>
     <integer name="default_text_size">12</integer>
     <!-- 85 = right-bottom -->
     <integer name="default_layout">85</integer>

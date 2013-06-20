@@ -16,7 +16,7 @@
  -->
 <resources>
     <!-- common -->
-    <string name="app_name">Temperature Layer</string>
+    <string name="app_name" translatable="false">Temperature Layer</string>
     <string name="action_settings">Settings</string>
 
     <!-- widget -->
@@ -27,7 +27,7 @@
     <string name="label_start_stop">Start/Stop service</string>
 
     <!-- main layer -->
-    <string name="string_degree">%1$s°%2$s</string>
-    <string name="initial_temperature">0.0</string>
+    <string name="string_degree" translatable="false">%1$s°%2$s</string>
+    <string name="initial_temperature" translatable="false">0.0</string>
 
 </resources>

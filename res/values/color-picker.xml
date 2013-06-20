@@ -16,8 +16,8 @@
  -->
 <resources>
 
-    <string name="hex">HEX</string>
-    <string name="arrow_right">→</string>
-    <string name="arrow_down">↓</string>
+    <string name="hex" translatable="false">HEX</string>
+    <string name="arrow_right" translatable="false">→</string>
+    <string name="arrow_down" translatable="false">↓</string>
 
 </resources>
