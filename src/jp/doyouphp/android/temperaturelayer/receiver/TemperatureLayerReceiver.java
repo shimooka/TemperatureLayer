@@ -17,12 +17,11 @@
 package jp.doyouphp.android.temperaturelayer.receiver;
 
 import jp.doyouphp.android.temperaturelayer.TemperatureLayerActivity;
+import jp.doyouphp.android.temperaturelayer.config.TemperatureLayerConfig;
 import jp.doyouphp.android.temperaturelayer.service.TemperatureLayerService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -34,8 +33,8 @@ import android.util.Log;
 public class TemperatureLayerReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        if (!pref.getBoolean("key_start_on_boot", false)) {
+    	TemperatureLayerConfig config = new TemperatureLayerConfig(context);
+        if (!config.isStartOnBoot()) {
             Log.v(TemperatureLayerActivity.TAG, "start on boot is false");
             return;
         }

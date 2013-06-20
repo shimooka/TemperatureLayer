@@ -18,6 +18,7 @@ package jp.doyouphp.android.temperaturelayer.service;
 
 import jp.doyouphp.android.temperaturelayer.R;
 import jp.doyouphp.android.temperaturelayer.TemperatureLayerActivity;
+import jp.doyouphp.android.temperaturelayer.config.TemperatureLayerConfig;
 
 import android.app.Notification;
 import android.app.Service;
@@ -25,11 +26,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,27 +44,24 @@ import android.widget.TextView;
 public class TemperatureLayerService extends Service {
     View mView;
     WindowManager mWindowManager;
-    SharedPreferences mSharedPreferences;
+    TemperatureLayerConfig mConfig;
 
     @Override
+    public void onCreate() {
+    	super.onCreate();
+    	mConfig = new TemperatureLayerConfig(getApplicationContext());
+    }
+    
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.v(TemperatureLayerActivity.TAG, "onStartCommand");
         startForeground(1, new Notification());
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         mView = layoutInflater.inflate(R.layout.overlay, null);
-        mSharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(mView.getContext());
 
         TextView text = (TextView)mView.findViewById(R.id.currentTemperature);
-        text.setTextSize(mSharedPreferences.getInt(
-                "key_text_size",
-                getResources().getInteger(R.integer.default_text_size)
-        ));
-        int color = mSharedPreferences.getInt(
-                "key_color",
-                getResources().getColor(R.color.default_color)
-        );
+        text.setTextSize(mConfig.getTextSize());
+        int color = mConfig.getColor();
         text.setTextColor(Color.argb(
                 Color.alpha(color),
                 Color.red(color),
@@ -79,10 +75,7 @@ public class TemperatureLayerService extends Service {
                 WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
                 WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 PixelFormat.TRANSLUCENT);
-        params.gravity = mSharedPreferences.getInt(
-                "key_layout",
-                getResources().getInteger(R.integer.default_layout)
-        );
+        params.gravity = mConfig.getLayout();
 
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         mWindowManager.addView(mView, params);
@@ -92,7 +85,7 @@ public class TemperatureLayerService extends Service {
         registerReceiver(broadcastReceiver, filter);
 
         Log.v(TemperatureLayerActivity.TAG,
-                "Service started : id " + startId + " with " + intent);
+                "TemperatureLayerService started : id=" + startId + " with " + intent);
 
         return START_STICKY;
     }
@@ -127,18 +120,17 @@ public class TemperatureLayerService extends Service {
         }
 
         private String getTemperatureAsString(Context context, int temperature) {
-            final String unitCelsius =
+            final String celsiusUnit =
                     context.getString(R.string.default_temperature_unit);
-            final String unitCurrent =
-                    mSharedPreferences.getString("key_temperature_unit", unitCelsius);
-            boolean useCelsius = unitCurrent.equals(unitCelsius);
+            final String currentUnit = mConfig.getTemperatureUnit();
+            boolean useCelsius = currentUnit.equals(celsiusUnit);
 
             return context.getString(
                     R.string.string_degree,
                     Double.toString(Math.floor(
                             useCelsius ? temperature : temperature * 9f / 5f + 320
                     ) / 10),
-                    unitCurrent
+                    currentUnit
             );
         }
     };

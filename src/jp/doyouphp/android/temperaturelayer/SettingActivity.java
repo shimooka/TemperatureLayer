@@ -19,6 +19,7 @@ package jp.doyouphp.android.temperaturelayer;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.doyouphp.android.temperaturelayer.config.TemperatureLayerConfig;
 import jp.doyouphp.android.temperaturelayer.service.TemperatureLayerService;
 
 import android.content.Intent;
@@ -33,11 +34,11 @@ import android.preference.PreferenceManager;
  */
 public class SettingActivity extends PreferenceActivity {
     private static final String[] PREFERENCE_KEYS = {
-    	"key_start_on_boot",
-    	"key_temperature_unit",
-    	"key_layout",
-    	"key_text_size",
-    	"key_color"
+        TemperatureLayerConfig.KEY_START_ON_BOOT,
+        TemperatureLayerConfig.KEY_TEMPERATURE_UNIT,
+        TemperatureLayerConfig.KEY_LAYOUT,
+        TemperatureLayerConfig.KEY_TEXT_SIZE,
+        TemperatureLayerConfig.KEY_COLOR
     };
     private Map<String, String> mLayouts = new HashMap<String, String>();
 
@@ -58,25 +59,20 @@ public class SettingActivity extends PreferenceActivity {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void onResume() {
         super.onResume();
-        getPreferenceScreen().getSharedPreferences()
-        		.registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void onPause() {
         super.onPause();
-        getPreferenceScreen().getSharedPreferences()
-        		.unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
     }
 
-    /**
-     * @see http://y-anz-m.blogspot.jp/2010/07/androidpreference-summary.html
-     */
     private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener =
         new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -93,19 +89,21 @@ public class SettingActivity extends PreferenceActivity {
         if (preference == null) {
             return;
         }
-        if (key.equals("key_start_on_boot")) {
+
+        TemperatureLayerConfig config = new TemperatureLayerConfig(this, sharedPreferences);
+        if (key.equals(TemperatureLayerConfig.KEY_START_ON_BOOT)) {
             preference.setSummary(
-            		sharedPreferences.getBoolean(key, false) ?
-            		getString(R.string.start_on_boot_yes) :
-            		getString(R.string.start_on_boot_no));
-        } else if (key.equals("key_color")) {
+                    config.isStartOnBoot() ?
+                    getString(R.string.start_on_boot_yes) :
+                    getString(R.string.start_on_boot_no));
+        } else if (key.equals(TemperatureLayerConfig.KEY_COLOR)) {
             // nop
-        } else if (key.equals("key_layout")) {
-            preference.setSummary(mLayouts.get(Integer.toString(sharedPreferences.getInt(key, getResources().getInteger(R.integer.default_layout)))));
-        } else if (key.equals("key_text_size")){
-            preference.setSummary(getString(R.string.size_unit, sharedPreferences.getInt(key, getResources().getInteger(R.integer.default_text_size))));
-        } else if (key.equals("key_temperature_unit")){
-            preference.setSummary(getString(R.string.string_degree, "", sharedPreferences.getString(key, getResources().getString(R.string.default_temperature_unit))));
+        } else if (key.equals(TemperatureLayerConfig.KEY_LAYOUT)) {
+            preference.setSummary(mLayouts.get(Integer.toString(config.getLayout())));
+        } else if (key.equals(TemperatureLayerConfig.KEY_TEXT_SIZE)){
+            preference.setSummary(getString(R.string.size_unit, config.getTextSize()));
+        } else if (key.equals(TemperatureLayerConfig.KEY_TEMPERATURE_UNIT)){
+            preference.setSummary(getString(R.string.string_degree, "", config.getTemperatureUnit()));
         }
 
         restartServiceIfRunning();
