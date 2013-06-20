@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright 2013 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ -->
+<resources>
+    <string name="preference_header">Setting</string>
+    <string name="start_on_boot_yes">The service will start on boot</string>
+    <string name="start_on_boot_no">The service will NOT start on boot</string>
+    <string name="size_unit">%1$d sp</string>
+
+    <string name="title_start_on_boot">Start Service on boot</string>
+
+    <string name="label_temperature_unit">Temperature unit</string>
+    <string name="dialogtitle_temperature_unit">Select temperature unit</string>
+
+    <string name="label_layout">Layout</string>
+    <string name="dialogtitle_layout">Select layout</string>
+
+    <string name="label_text_size">Text size</string>
+    <string name="dialogtitle_text_size">Select text size</string>
+
+    <string name="title_color">Text color</string>
+
+    <string name="dialog_color_picker">Select text color</string>
+    <string name="press_color_to_apply">Press on color to apply</string>
+
+
+    <string-array name="entries_layout">
+        <item >Left-Top</item>
+        <item >Right-Top</item>
+        <item >Left-Bottom</item>
+        <item >Right-Bottom</item>
+    </string-array>
+    <string-array name="values_layout">
+        <item >51</item>
+        <item >53</item>
+        <item >83</item>
+        <item >85</item>
+    </string-array>
+
+    <string-array name="entries_temperature_unit">
+        <item >Celsius (°C)</item>
+        <item >Fahrenheit (°F)</item>
+    </string-array>
+    <string-array name="values_temperature_unit">
+        <item >C</item>
+        <item >F</item>
+    </string-array>
+
+    <string-array name="entries_text_size">
+        <item >6 sp</item>
+        <item >7 sp</item>
+        <item >8 sp</item>
+        <item >9 sp</item>
+        <item >10 sp</item>
+        <item >11 sp</item>
+        <item >12 sp</item>
+        <item >13 sp</item>
+        <item >14 sp</item>
+        <item >15 sp</item>
+        <item >16 sp</item>
+        <item >17 sp</item>
+        <item >18 sp</item>
+        <item >19 sp</item>
+        <item >20 sp</item>
+        <item >21 sp</item>
+        <item >22 sp</item>
+        <item >23 sp</item>
+        <item >24 sp</item>
+        <item >25 sp</item>
+        <item >26 sp</item>
+        <item >27 sp</item>
+        <item >28 sp</item>
+        <item >29 sp</item>
+        <item >30 sp</item>
+        <item >31 sp</item>
+        <item >32 sp</item>
+        <item >33 sp</item>
+        <item >34 sp</item>
+        <item >35 sp</item>
+        <item >36 sp</item>
+        <item >37 sp</item>
+        <item >38 sp</item>
+        <item >39 sp</item>
+        <item >40 sp</item>
+        <item >41 sp</item>
+        <item >42 sp</item>
+        <item >43 sp</item>
+        <item >44 sp</item>
+        <item >45 sp</item>
+        <item >46 sp</item>
+        <item >47 sp</item>
+        <item >48 sp</item>
+        <item >49 sp</item>
+        <item >50 sp</item>
+        <item >51 sp</item>
+        <item >52 sp</item>
+        <item >53 sp</item>
+        <item >54 sp</item>
+        <item >55 sp</item>
+        <item >56 sp</item>
+        <item >57 sp</item>
+        <item >58 sp</item>
+        <item >59 sp</item>
+        <item >60 sp</item>
+        <item >61 sp</item>
+        <item >62 sp</item>
+        <item >63 sp</item>
+        <item >64 sp</item>
+        <item >65 sp</item>
+        <item >66 sp</item>
+        <item >67 sp</item>
+        <item >68 sp</item>
+        <item >69 sp</item>
+        <item >70 sp</item>
+        <item >71 sp</item>
+        <item >72 sp</item>
+        <item >73 sp</item>
+        <item >74 sp</item>
+        <item >75 sp</item>
+        <item >76 sp</item>
+        <item >77 sp</item>
+        <item >78 sp</item>
+        <item >79 sp</item>
+        <item >80 sp</item>
+        <item >81 sp</item>
+        <item >82 sp</item>
+        <item >83 sp</item>
+        <item >84 sp</item>
+        <item >85 sp</item>
+        <item >86 sp</item>
+        <item >87 sp</item>
+        <item >88 sp</item>
+        <item >89 sp</item>
+        <item >90 sp</item>
+        <item >91 sp</item>
+        <item >92 sp</item>
+        <item >93 sp</item>
+        <item >94 sp</item>
+        <item >95 sp</item>
+        <item >96 sp</item>
+        <item >97 sp</item>
+        <item >98 sp</item>
+        <item >99 sp</item>
+        <item >100 sp</item>
+    </string-array>
+    <string-array name="values_text_size">
+        <item >6</item>
+        <item >7</item>
+        <item >8</item>
+        <item >9</item>
+        <item >10</item>
+        <item >11</item>
+        <item >12</item>
+        <item >13</item>
+        <item >14</item>
+        <item >15</item>
+        <item >16</item>
+        <item >17</item>
+        <item >18</item>
+        <item >19</item>
+        <item >20</item>
+        <item >21</item>
+        <item >22</item>
+        <item >23</item>
+        <item >24</item>
+        <item >25</item>
+        <item >26</item>
+        <item >27</item>
+        <item >28</item>
+        <item >29</item>
+        <item >30</item>
+        <item >31</item>
+        <item >32</item>
+        <item >33</item>
+        <item >34</item>
+        <item >35</item>
+        <item >36</item>
+        <item >37</item>
+        <item >38</item>
+        <item >39</item>
+        <item >40</item>
+        <item >41</item>
+        <item >42</item>
+        <item >43</item>
+        <item >44</item>
+        <item >45</item>
+        <item >46</item>
+        <item >47</item>
+        <item >48</item>
+        <item >49</item>
+        <item >50</item>
+        <item >51</item>
+        <item >52</item>
+        <item >53</item>
+        <item >54</item>
+        <item >55</item>
+        <item >56</item>
+        <item >57</item>
+        <item >58</item>
+        <item >59</item>
+        <item >60</item>
+        <item >61</item>
+        <item >62</item>
+        <item >63</item>
+        <item >64</item>
+        <item >65</item>
+        <item >66</item>
+        <item >67</item>
+        <item >68</item>
+        <item >69</item>
+        <item >70</item>
+        <item >71</item>
+        <item >72</item>
+        <item >73</item>
+        <item >74</item>
+        <item >75</item>
+        <item >76</item>
+        <item >77</item>
+        <item >78</item>
+        <item >79</item>
+        <item >80</item>
+        <item >81</item>
+        <item >82</item>
+        <item >83</item>
+        <item >84</item>
+        <item >85</item>
+        <item >86</item>
+        <item >87</item>
+        <item >88</item>
+        <item >89</item>
+        <item >90</item>
+        <item >91</item>
+        <item >92</item>
+        <item >93</item>
+        <item >94</item>
+        <item >95</item>
+        <item >96</item>
+        <item >97</item>
+        <item >98</item>
+        <item >99</item>
+        <item >100</item>
+    </string-array>
+
+
+    <string name="default_temperature_unit">C</string>
+    <integer name="default_text_size">12</integer>
+    <!-- 85 = right-bottom -->
+    <integer name="default_layout">85</integer>
+    <color name="default_color">#ffffffff</color>
+
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Copyright 2013 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ -->
+<resources>
+
+    <string name="preference_header">設定</string>
+    <string name="start_on_boot_yes">端末起動時に自動起動します</string>
+    <string name="start_on_boot_no">端末起動時に自動起動しません</string>
+
+    <string name="title_start_on_boot">自動起動</string>
+
+    <string name="label_temperature_unit">温度の単位</string>
+    <string name="dialogtitle_temperature_unit">温度の単位の選択</string>
+
+    <string name="label_layout">表示位置</string>
+    <string name="dialogtitle_layout">表示位置の選択</string>
+
+    <string name="label_text_size">テキストサイズ</string>
+    <string name="dialogtitle_text_size">テキストサイズの選択</string>
+
+    <string name="title_color">テキスト色</string>
+
+    <string name="dialog_color_picker">テキスト色の選択</string>
+    <string name="press_color_to_apply">色にタッチして適用</string>
+
+    <string-array name="entries_temperature_unit">
+        <item >摂氏 (°C)</item>
+        <item >華氏 (°F)</item>
+    </string-array>
+
+    <string-array name="entries_layout">
+        <item >左上</item>
+        <item >右上</item>
+        <item >左下</item>
+        <item >右下</item>
+    </string-array>
+
+</resources>

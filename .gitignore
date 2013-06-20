@@ -4,3 +4,10 @@
 *.jar
 *.war
 *.ear
+
+# custom #
+proguard
+*_
+*.BAK
+*~
+*.apk
