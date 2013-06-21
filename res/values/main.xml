@@ -17,7 +17,7 @@
 <resources>
     <!-- common -->
     <string name="app_name" translatable="false">Temperature Layer</string>
-    <string name="action_settings">Settings</string>
+    <string name="title_settings">Settings</string>
 
     <!-- widget -->
     <string name="start_service">Start Service</string>
