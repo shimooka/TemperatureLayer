@@ -48,25 +48,20 @@ public class TemperatureLayerService extends Service {
 
     @Override
     public void onCreate() {
-    	super.onCreate();
-    	mConfig = new TemperatureLayerConfig(getApplicationContext());
+        super.onCreate();
+        mConfig = new TemperatureLayerConfig(getApplicationContext());
     }
-    
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startForeground(1, new Notification());
 
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        mView = layoutInflater.inflate(R.layout.overlay, null);
-
+        mView = LayoutInflater.from(this).inflate(R.layout.overlay, null);
         TextView text = (TextView)mView.findViewById(R.id.currentTemperature);
         text.setTextSize(mConfig.getTextSize());
         int color = mConfig.getColor();
         text.setTextColor(Color.argb(
-                Color.alpha(color),
-                Color.red(color),
-                Color.green(color),
-                Color.blue(color)
+                Color.alpha(color), Color.red(color), Color.green(color), Color.blue(color)
         ));
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
@@ -77,7 +72,7 @@ public class TemperatureLayerService extends Service {
                 PixelFormat.TRANSLUCENT);
         params.gravity = mConfig.getLayout();
 
-        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
         mWindowManager.addView(mView, params);
 
         IntentFilter filter = new IntentFilter();
@@ -109,6 +104,7 @@ public class TemperatureLayerService extends Service {
         public void onReceive(Context context, Intent intent){
             String action = intent.getAction();
             Log.v(TemperatureLayerActivity.TAG, "action : " + action);
+
             if (action != null && action.equals(Intent.ACTION_BATTERY_CHANGED)) {
                 int temperature = intent.getIntExtra("temperature", 0);
                 String temperatureString = getTemperatureAsString(context, temperature);
@@ -127,11 +123,13 @@ public class TemperatureLayerService extends Service {
 
             return context.getString(
                     R.string.string_degree,
-                    Double.toString(Math.floor(
-                            useCelsius ? temperature : temperature * 9f / 5f + 320
-                    ) / 10),
-                    currentUnit
+                    calculateTemperature(temperature, useCelsius),
+                    mConfig.getTemperatureUnit()
             );
         }
     };
+
+    public double calculateTemperature(int temperature, boolean useCelsius) {
+        return Math.floor(useCelsius ? temperature : temperature * 9f / 5f + 320) / 10;
+    }
 }
