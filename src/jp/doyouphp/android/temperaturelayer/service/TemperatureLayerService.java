@@ -45,6 +45,7 @@ public class TemperatureLayerService extends Service {
     View mView;
     WindowManager mWindowManager;
     TemperatureLayerConfig mConfig;
+    public static boolean isTest = false;
 
     @Override
     public void onCreate() {
@@ -54,7 +55,9 @@ public class TemperatureLayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startForeground(1, new Notification());
+    	if (!isTest) {
+	        startForeground(1, new Notification());
+    	}
 
         mView = LayoutInflater.from(this).inflate(R.layout.overlay, null);
         TextView text = (TextView)mView.findViewById(R.id.currentTemperature);
@@ -85,9 +88,16 @@ public class TemperatureLayerService extends Service {
         return START_STICKY;
     }
 
-    @Override
+	@Override
     public void onDestroy() {
-        unregisterReceiver(broadcastReceiver);
+		try {
+	        unregisterReceiver(broadcastReceiver);
+		} catch (IllegalArgumentException e) {
+			if (!isTest) {
+				Log.e(TemperatureLayerActivity.TAG, e.getMessage());
+			}
+		}
+        
         if (mWindowManager != null) {
             mWindowManager.removeView(mView);
         }
