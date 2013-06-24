@@ -20,7 +20,7 @@
     <string name="start_on_boot_no">The service will NOT start on boot</string>
     <string name="size_unit" translatable="false">%1$d sp</string>
 
-    <string name="title_start_on_boot">Start Service on boot</string>
+    <string name="label_start_on_boot">Start Service on boot</string>
 
     <string name="label_temperature_unit">Temperature unit</string>
     <string name="dialogtitle_temperature_unit">Select temperature unit</string>
@@ -31,7 +31,7 @@
     <string name="label_text_size">Text size</string>
     <string name="dialogtitle_text_size">Select text size</string>
 
-    <string name="title_color">Text color</string>
+    <string name="label_color">Text color</string>
 
     <string name="dialog_color_picker">Select text color</string>
     <string name="press_color_to_apply">Press on color to apply</string>

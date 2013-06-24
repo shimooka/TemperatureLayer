@@ -115,4 +115,9 @@ public class SettingActivity extends PreferenceActivity {
             startService(new Intent(this, TemperatureLayerService.class));
         }
     }
+
+	public void resetSetting() {
+        TemperatureLayerConfig config = new TemperatureLayerConfig(this);
+        config.reset();
+	}
 }

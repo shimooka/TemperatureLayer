@@ -49,7 +49,10 @@ public final class TemperatureLayerConfig {
     }
 
     private void initialize() {
-        if (!isInitialized()) {
+    	initialize(false);
+    }
+    private void initialize(boolean force) {
+        if (force || !isInitialized()) {
             mSharedPreferences.edit()
                 .putBoolean(KEY_START_ON_BOOT, false)
                 .putString(KEY_TEMPERATURE_UNIT, mContext.getResources().getString(R.string.default_temperature_unit))
@@ -88,4 +91,8 @@ public final class TemperatureLayerConfig {
         return mSharedPreferences.getInt(KEY_COLOR,
                 mContext.getResources().getInteger(R.color.default_color));
     }
+
+	public void reset() {
+		initialize(true);
+	}
 }

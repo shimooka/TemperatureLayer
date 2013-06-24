@@ -15,16 +15,19 @@
  * limitations under the License.
  -->
 <PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:title="@string/app_name">
 
   <PreferenceCategory
       android:title="@string/preference_header">
 
       <CheckBoxPreference
+          android:id="@+id/view_start_on_boot"
           android:key="key_start_on_boot"
-          android:title="@string/title_start_on_boot"/>
+          android:title="@string/label_start_on_boot"/>
 
       <ListPreference
+          android:id="@+id/view_temperature_unit"
           android:key="key_temperature_unit"
           android:title="@string/label_temperature_unit"
           android:dialogTitle="@string/dialogtitle_temperature_unit"
@@ -33,6 +36,7 @@
           android:defaultValue="@string/default_temperature_unit" />
 
       <com.google.android.apps.mytracks.IntegerListPreference
+          android:id="@+id/view_layout"
           android:key="key_layout"
           android:title="@string/label_layout"
           android:dialogTitle="@string/dialogtitle_layout"
@@ -41,6 +45,7 @@
           android:defaultValue="@integer/default_layout" />
 
       <com.google.android.apps.mytracks.IntegerListPreference
+          android:id="@+id/view_text_size"
           android:key="key_text_size"
           android:title="@string/label_text_size"
           android:dialogTitle="@string/dialogtitle_text_size"
@@ -49,8 +54,9 @@
           android:defaultValue="@integer/default_text_size" />
 
       <net.margaritov.preference.colorpicker.ColorPickerPreference
+          android:id="@+id/view_color"
           android:key="key_color"
-          android:title="@string/title_color"
+          android:title="@string/label_color"
           android:defaultValue="@color/default_color"
           alphaSlider="true" />
 
