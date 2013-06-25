@@ -38,10 +38,10 @@
 
 
     <string-array name="entries_layout">
-        <item >Left-Top</item>
-        <item >Right-Top</item>
-        <item >Left-Bottom</item>
-        <item >Right-Bottom</item>
+        <item >Upper left</item>
+        <item >Upper Right</item>
+        <item >Bottom left</item>
+        <item >Bottom right</item>
     </string-array>
     <string-array name="values_layout" translatable="false">
         <item >51</item>
