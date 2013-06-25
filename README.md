@@ -8,7 +8,7 @@ Feature
 - Up to Android2.2
 - No special permissions require
 - The battery temperature will be displayed on the transparent layer
-- Automatic start
+- Automatic start on boot
 - Celsius (°C) or Fahrenheit (°F)
 - A display position is chosen from the four corners of a screen (on a status bar is possible)
 - Customize text size and text color with transparency
