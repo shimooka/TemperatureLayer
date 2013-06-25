@@ -37,109 +37,115 @@ import android.widget.TextView;
 
 /**
  * the main service class of {@link TemperatureLayerActivity}
- *
- * This service will register a BroadcastReceiver which receives Intent.ACTION_BATTERY_CHANGED
- * and update battery temperature string on inflated layer.
+ * 
+ * This service will register a BroadcastReceiver which receives
+ * Intent.ACTION_BATTERY_CHANGED and update battery temperature string on
+ * inflated layer.
  */
 public class TemperatureLayerService extends Service {
-    View mView;
-    WindowManager mWindowManager;
-    TemperatureLayerConfig mConfig;
-    public static boolean isTest = false;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mConfig = new TemperatureLayerConfig(getApplicationContext());
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-    	if (!isTest) {
-	        startForeground(1, new Notification());
-    	}
-
-        mView = LayoutInflater.from(this).inflate(R.layout.overlay, null);
-        TextView text = (TextView)mView.findViewById(R.id.currentTemperature);
-        text.setTextSize(mConfig.getTextSize());
-        int color = mConfig.getColor();
-        text.setTextColor(Color.argb(
-                Color.alpha(color), Color.red(color), Color.green(color), Color.blue(color)
-        ));
-
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN|WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-        params.gravity = mConfig.getLayout();
-
-        mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
-        mWindowManager.addView(mView, params);
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_BATTERY_CHANGED);
-        registerReceiver(broadcastReceiver, filter);
-
-        Log.v(TemperatureLayerActivity.TAG,
-                "TemperatureLayerService started : id=" + startId + " with " + intent);
-
-        return START_STICKY;
-    }
+	View mView;
+	WindowManager mWindowManager;
+	TemperatureLayerConfig mConfig;
+	public static boolean isTest = false;
 
 	@Override
-    public void onDestroy() {
+	public void onCreate() {
+		super.onCreate();
+		mConfig = new TemperatureLayerConfig(getApplicationContext());
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		if (!isTest) {
+			// require API Level 5
+			startForeground(1, new Notification());
+		}
+
+		mView = LayoutInflater.from(this).inflate(R.layout.overlay, null);
+		TextView text = (TextView) mView.findViewById(R.id.currentTemperature);
+		text.setTextSize(mConfig.getTextSize());
+		int color = mConfig.getColor();
+		text.setTextColor(Color.argb(Color.alpha(color), Color.red(color),
+				Color.green(color), Color.blue(color)));
+
+		WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+				WindowManager.LayoutParams.WRAP_CONTENT,
+				WindowManager.LayoutParams.WRAP_CONTENT,
+				WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+				WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+						| WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+						| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+				PixelFormat.TRANSLUCENT);
+		params.gravity = mConfig.getLayout();
+
+		mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+		mWindowManager.addView(mView, params);
+
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Intent.ACTION_BATTERY_CHANGED);
+		registerReceiver(broadcastReceiver, filter);
+
+		Log.v(TemperatureLayerActivity.TAG,
+				"TemperatureLayerService started : id=" + startId + " with "
+						+ intent);
+
+		return START_STICKY;
+	}
+
+	@Override
+	public void onDestroy() {
 		try {
-	        unregisterReceiver(broadcastReceiver);
+			unregisterReceiver(broadcastReceiver);
 		} catch (IllegalArgumentException e) {
 			if (!isTest) {
 				Log.e(TemperatureLayerActivity.TAG, e.getMessage());
 			}
 		}
-        
-        if (mWindowManager != null) {
-            mWindowManager.removeView(mView);
-        }
 
-        Log.v(TemperatureLayerActivity.TAG, "Service stopped");
-    }
+		if (mWindowManager != null) {
+			mWindowManager.removeView(mView);
+		}
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
+		Log.v(TemperatureLayerActivity.TAG, "Service stopped");
+	}
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent){
-            String action = intent.getAction();
-            Log.v(TemperatureLayerActivity.TAG, "action : " + action);
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
+	}
 
-            if (action != null && action.equals(Intent.ACTION_BATTERY_CHANGED)) {
-                int temperature = intent.getIntExtra("temperature", 0);
-                String temperatureString = getTemperatureAsString(context, temperature);
+	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			Log.v(TemperatureLayerActivity.TAG, "action : " + action);
 
-                TextView text = (TextView)mView.findViewById(R.id.currentTemperature);
-                text.setText(temperatureString);
-                Log.v(TemperatureLayerActivity.TAG, "current : " + temperatureString);
-            }
-        }
+			if (action != null && action.equals(Intent.ACTION_BATTERY_CHANGED)) {
+				int temperature = intent.getIntExtra("temperature", 0);
+				String temperatureString = getTemperatureAsString(context,
+						temperature);
 
-        private String getTemperatureAsString(Context context, int temperature) {
-            final String celsiusUnit =
-                    context.getString(R.string.default_temperature_unit);
-            final String currentUnit = mConfig.getTemperatureUnit();
-            boolean useCelsius = currentUnit.equals(celsiusUnit);
+				TextView text = (TextView) mView
+						.findViewById(R.id.currentTemperature);
+				text.setText(temperatureString);
+				Log.v(TemperatureLayerActivity.TAG, "current : "
+						+ temperatureString);
+			}
+		}
 
-            return context.getString(
-                    R.string.string_degree,
-                    calculateTemperature(temperature, useCelsius),
-                    mConfig.getTemperatureUnit()
-            );
-        }
-    };
+		private String getTemperatureAsString(Context context, int temperature) {
+			final String celsiusUnit = context
+					.getString(R.string.default_temperature_unit);
+			final String currentUnit = mConfig.getTemperatureUnit();
+			boolean useCelsius = currentUnit.equals(celsiusUnit);
 
-    public double calculateTemperature(int temperature, boolean useCelsius) {
-        return Math.floor(useCelsius ? temperature : temperature * 9f / 5f + 320) / 10;
-    }
+			return context.getString(R.string.string_degree,
+					calculateTemperature(temperature, useCelsius),
+					mConfig.getTemperatureUnit());
+		}
+	};
+
+	public double calculateTemperature(int temperature, boolean useCelsius) {
+		return Math.floor(useCelsius ? temperature
+				: temperature * 9f / 5f + 320) / 10;
+	}
 }

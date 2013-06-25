@@ -33,91 +33,99 @@ import android.preference.PreferenceManager;
  * an Activity class for setting screen
  */
 public class SettingActivity extends PreferenceActivity {
-    private static final String[] PREFERENCE_KEYS = {
-        TemperatureLayerConfig.KEY_START_ON_BOOT,
-        TemperatureLayerConfig.KEY_TEMPERATURE_UNIT,
-        TemperatureLayerConfig.KEY_LAYOUT,
-        TemperatureLayerConfig.KEY_TEXT_SIZE,
-        TemperatureLayerConfig.KEY_COLOR
-    };
-    private Map<String, String> mLayouts = new HashMap<String, String>();
+	private static final String[] PREFERENCE_KEYS = {
+			TemperatureLayerConfig.KEY_START_ON_BOOT,
+			TemperatureLayerConfig.KEY_TEMPERATURE_UNIT,
+			TemperatureLayerConfig.KEY_LAYOUT,
+			TemperatureLayerConfig.KEY_TEXT_SIZE,
+			TemperatureLayerConfig.KEY_COLOR };
+	private Map<String, String> mLayouts = new HashMap<String, String>();
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref);
+	@SuppressWarnings("deprecation")
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.pref);
 
-        String[] entries = getResources().getStringArray(R.array.entries_layout);
-        String[] values = getResources().getStringArray(R.array.values_layout);
-        for (int i = 0; i < entries.length; i++) {
-            mLayouts.put(values[i], entries[i]);
-        }
+		String[] entries = getResources()
+				.getStringArray(R.array.entries_layout);
+		String[] values = getResources().getStringArray(R.array.values_layout);
+		for (int i = 0; i < entries.length; i++) {
+			mLayouts.put(values[i], entries[i]);
+		}
 
-        for (String key: PREFERENCE_KEYS) {
-            setPreferenceSummary(key);
-        }
-    }
+		for (String key : PREFERENCE_KEYS) {
+			setPreferenceSummary(key);
+		}
+	}
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
-    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		PreferenceManager.getDefaultSharedPreferences(this)
+				.registerOnSharedPreferenceChangeListener(
+						mSharedPreferenceChangeListener);
+	}
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(mSharedPreferenceChangeListener);
-    }
+	@Override
+	protected void onPause() {
+		super.onPause();
+		PreferenceManager.getDefaultSharedPreferences(this)
+				.unregisterOnSharedPreferenceChangeListener(
+						mSharedPreferenceChangeListener);
+	}
 
-    private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener =
-        new SharedPreferences.OnSharedPreferenceChangeListener() {
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                setPreferenceSummary(sharedPreferences, key);
-            }
-        };
+	private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+		public void onSharedPreferenceChanged(
+				SharedPreferences sharedPreferences, String key) {
+			setPreferenceSummary(sharedPreferences, key);
+		}
+	};
 
-    private void setPreferenceSummary(String key) {
-        setPreferenceSummary(PreferenceManager.getDefaultSharedPreferences(this), key);
-    }
-    private void setPreferenceSummary(SharedPreferences sharedPreferences, String key) {
-        @SuppressWarnings("deprecation")
-        Preference preference = findPreference(key);
-        if (preference == null) {
-            return;
-        }
+	private void setPreferenceSummary(String key) {
+		setPreferenceSummary(
+				PreferenceManager.getDefaultSharedPreferences(this), key);
+	}
 
-        TemperatureLayerConfig config = new TemperatureLayerConfig(this, sharedPreferences);
-        if (key.equals(TemperatureLayerConfig.KEY_START_ON_BOOT)) {
-            preference.setSummary(
-                    config.isStartOnBoot() ?
-                    getString(R.string.start_on_boot_yes) :
-                    getString(R.string.start_on_boot_no));
-        } else if (key.equals(TemperatureLayerConfig.KEY_COLOR)) {
-            // nop
-        } else if (key.equals(TemperatureLayerConfig.KEY_LAYOUT)) {
-            preference.setSummary(mLayouts.get(Integer.toString(config.getLayout())));
-        } else if (key.equals(TemperatureLayerConfig.KEY_TEXT_SIZE)){
-            preference.setSummary(getString(R.string.size_unit, config.getTextSize()));
-        } else if (key.equals(TemperatureLayerConfig.KEY_TEMPERATURE_UNIT)){
-            preference.setSummary(getString(R.string.string_degree, "", config.getTemperatureUnit()));
-        }
+	private void setPreferenceSummary(SharedPreferences sharedPreferences,
+			String key) {
+		@SuppressWarnings("deprecation")
+		Preference preference = findPreference(key);
+		if (preference == null) {
+			return;
+		}
 
-        restartServiceIfRunning();
-    }
+		TemperatureLayerConfig config = new TemperatureLayerConfig(this,
+				sharedPreferences);
+		if (key.equals(TemperatureLayerConfig.KEY_START_ON_BOOT)) {
+			preference
+					.setSummary(config.isStartOnBoot() ? getString(R.string.start_on_boot_yes)
+							: getString(R.string.start_on_boot_no));
+		} else if (key.equals(TemperatureLayerConfig.KEY_COLOR)) {
+			// nop
+		} else if (key.equals(TemperatureLayerConfig.KEY_LAYOUT)) {
+			preference.setSummary(mLayouts.get(Integer.toString(config
+					.getLayout())));
+		} else if (key.equals(TemperatureLayerConfig.KEY_TEXT_SIZE)) {
+			preference.setSummary(getString(R.string.size_unit,
+					config.getTextSize()));
+		} else if (key.equals(TemperatureLayerConfig.KEY_TEMPERATURE_UNIT)) {
+			preference.setSummary(getString(R.string.string_degree, "",
+					config.getTemperatureUnit()));
+		}
 
-    private void restartServiceIfRunning() {
-        if (TemperatureLayerActivity.isServiceRunning(this)) {
-            stopService(new Intent(this, TemperatureLayerService.class));
-            startService(new Intent(this, TemperatureLayerService.class));
-        }
-    }
+		restartServiceIfRunning();
+	}
+
+	private void restartServiceIfRunning() {
+		if (TemperatureLayerActivity.isServiceRunning(this)) {
+			stopService(new Intent(this, TemperatureLayerService.class));
+			startService(new Intent(this, TemperatureLayerService.class));
+		}
+	}
 
 	public void resetSetting() {
-        TemperatureLayerConfig config = new TemperatureLayerConfig(this);
-        config.reset();
+		TemperatureLayerConfig config = new TemperatureLayerConfig(this);
+		config.reset();
 	}
 }

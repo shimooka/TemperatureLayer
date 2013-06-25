@@ -27,24 +27,28 @@ import android.util.Log;
 /**
  * BroadcastReceiver class for starting on boot
  * 
- * This receiver will receive Intent.ACTION_BOOT_COMPLETED or Intent.ACTION_PACKAGE_REPLACED
- * and start TemperatureLayer service if current configuration is on.
+ * This receiver will receive Intent.ACTION_BOOT_COMPLETED or
+ * Intent.ACTION_PACKAGE_REPLACED and start TemperatureLayer service if current
+ * configuration is on.
  */
 public class TemperatureLayerReceiver extends BroadcastReceiver {
-    @Override
-    public void onReceive(Context context, Intent intent){
-    	TemperatureLayerConfig config = new TemperatureLayerConfig(context);
-        if (!config.isStartOnBoot()) {
-            Log.v(TemperatureLayerActivity.TAG, "start on boot is false");
-            return;
-        }
-        Log.v(TemperatureLayerActivity.TAG, "intent : " + intent.getAction());
-        Log.v(TemperatureLayerActivity.TAG, "data string : " + intent.getDataString());
-        if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED) ||
-            (intent.getAction().equals(Intent.ACTION_PACKAGE_REPLACED) &&
-             intent.getDataString().equals("package:jp.doyouphp.android.TemperatureLayer"))) {
-                    Log.v(TemperatureLayerActivity.TAG, "send intent");
-                    context.startService(new Intent(context, TemperatureLayerService.class));
-        }
-    }
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		TemperatureLayerConfig config = new TemperatureLayerConfig(context);
+		if (!config.isStartOnBoot()) {
+			Log.v(TemperatureLayerActivity.TAG, "start on boot is false");
+			return;
+		}
+		Log.v(TemperatureLayerActivity.TAG, "intent : " + intent.getAction());
+		Log.v(TemperatureLayerActivity.TAG,
+				"data string : " + intent.getDataString());
+		if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)
+				|| (intent.getAction().equals(Intent.ACTION_PACKAGE_REPLACED) && intent
+						.getDataString().equals(
+								"package:jp.doyouphp.android.TemperatureLayer"))) {
+			Log.v(TemperatureLayerActivity.TAG, "send intent");
+			context.startService(new Intent(context,
+					TemperatureLayerService.class));
+		}
+	}
 }
