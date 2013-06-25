@@ -15,19 +15,23 @@ Feature
 - English and Japanese translation
 - ... and for FREE !
 
+Screen capture
+--------------
+![All screen of Temperature Layer](capture.png)
+
 Acknowledgement
 ---------------
 This application use [Android Color Picker]. Thanks for yukuku's great works !
 
 Releases
 --------
-- 2013/06/25 ver.0.9.3　display on a status bar is possible
-- 2013/06/24 ver.0.9.2　internal refactored
-- 2013/06/19 ver.0.9.1　initial beta release
+- 2013/06/25 ver.0.9.3 - display on a status bar is possible
+- 2013/06/24 ver.0.9.2 - internal refactored
+- 2013/06/19 ver.0.9.1 - initial beta release
 
 License
 -------
-Copyright &copy; 2013 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
+Copyright &copy; 2013 Hideyuki SHIMOOKA &lt;shimooka@doyouphp.jp&gt;
 Licensed under the [Apache License, Version 2.0][Apache]
 
 [Apache]: http://www.apache.org/licenses/LICENSE-2.0
