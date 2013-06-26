@@ -7,7 +7,6 @@ Temperature Layer is available at [Google Play].
 Feature
 -------
 - Android2.0 or later
-- No special permissions require
 - The battery temperature will be displayed on the transparent layer
 - Automatic start on boot
 - Celsius (°C) or Fahrenheit (°F)
