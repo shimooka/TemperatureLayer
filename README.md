@@ -1,6 +1,7 @@
 Temperature Layer
 =================
 [Temperature Layer] is the simple Android application which displays battery temperature. The temperature will be displayed on the transparent layer, so it does not become obstructive.
+
 Temperature Layer is available at [Google Play].
 
 Feature
