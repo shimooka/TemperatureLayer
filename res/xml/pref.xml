@@ -49,6 +49,11 @@
           android:entryValues="@array/values_layout"
           android:defaultValue="@integer/default_layout" />
 
+      <com.ulduzsoft.preferences.FontPreference
+          android:id="@+id/view_font"
+          android:key="key_font"
+          android:title="@string/label_font" />
+
       <com.google.android.apps.mytracks.IntegerListPreference
           android:id="@+id/view_text_size"
           android:key="key_text_size"
@@ -64,11 +69,6 @@
           android:title="@string/label_color"
           android:defaultValue="@color/default_color"
           alphaSlider="true" />
-
-      <com.ulduzsoft.preferences.FontPreference
-          android:id="@+id/view_font"
-          android:key="key_font"
-          android:title="@string/label_font" />
 
   </PreferenceCategory>
 </PreferenceScreen>

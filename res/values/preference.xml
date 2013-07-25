@@ -41,8 +41,6 @@
     <string name="press_color_to_apply">Press on color to apply</string>
 
     <string name="label_font">Text font</string>
-    <string name="dialog_font_picker">Select text font</string>
-    <string name="press_font_to_apply">Press on font to apply</string>
 
 
     <string-array name="entries_layout">

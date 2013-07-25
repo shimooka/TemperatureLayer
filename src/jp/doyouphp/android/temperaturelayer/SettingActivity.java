@@ -19,6 +19,8 @@ package jp.doyouphp.android.temperaturelayer;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ulduzsoft.font.FontManager;
+
 import jp.doyouphp.android.temperaturelayer.config.TemperatureLayerConfig;
 import jp.doyouphp.android.temperaturelayer.service.TemperatureLayerService;
 
@@ -117,6 +119,10 @@ public class SettingActivity extends PreferenceActivity {
 		} else if (key.equals(TemperatureLayerConfig.KEY_TEMPERATURE_UNIT)) {
 			preference.setSummary(getString(R.string.string_degree, "",
 					config.getTemperatureUnit()));
+		} else if (key.equals(TemperatureLayerConfig.KEY_FONT)) {
+			HashMap<String, String> fonts = FontManager.enumerateFonts();
+			String fontName = fonts.get(config.getFontPath());
+			preference.setSummary(fontName != null ? fontName : "");
 		}
 
 		restartServiceIfRunning();
