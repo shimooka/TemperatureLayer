@@ -16,11 +16,16 @@
  -->
 <resources>
     <string name="preference_header">Setting</string>
-    <string name="start_on_boot_yes">The service will start on boot</string>
-    <string name="start_on_boot_no">The service will NOT start on boot</string>
+
     <string name="size_unit" translatable="false">%1$d sp</string>
 
     <string name="label_start_on_boot">Start Service on boot</string>
+    <string name="start_on_boot_yes">The service will start on boot</string>
+    <string name="start_on_boot_no">The service will NOT start on boot</string>
+
+    <string name="label_notification">Notify temperature</string>
+    <string name="notification_yes">Current battery temperature will be notified on the status bar</string>
+    <string name="notification_no">Current battery temperature will NOT be notified on the status bar</string>
 
     <string name="label_temperature_unit">Temperature unit</string>
     <string name="dialogtitle_temperature_unit">Select temperature unit</string>
@@ -32,9 +37,12 @@
     <string name="dialogtitle_text_size">Select text size</string>
 
     <string name="label_color">Text color</string>
-
     <string name="dialog_color_picker">Select text color</string>
     <string name="press_color_to_apply">Press on color to apply</string>
+
+    <string name="label_font">Text font</string>
+    <string name="dialog_font_picker">Select text font</string>
+    <string name="press_font_to_apply">Press on font to apply</string>
 
 
     <string-array name="entries_layout">

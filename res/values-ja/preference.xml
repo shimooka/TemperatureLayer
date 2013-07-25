@@ -22,6 +22,10 @@
 
     <string name="label_start_on_boot">自動起動</string>
 
+    <string name="label_notification">通知</string>
+    <string name="notification_yes">現在の温度をステータスバーに通知します</string>
+    <string name="notification_no">現在の温度をステータスバーに通知しません</string>
+
     <string name="label_temperature_unit">温度の単位</string>
     <string name="dialogtitle_temperature_unit">温度の単位の選択</string>
 

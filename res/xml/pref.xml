@@ -26,6 +26,11 @@
           android:key="key_start_on_boot"
           android:title="@string/label_start_on_boot"/>
 
+      <CheckBoxPreference
+          android:id="@+id/view_notification"
+          android:key="key_notification"
+          android:title="@string/label_notification"/>
+
       <ListPreference
           android:id="@+id/view_temperature_unit"
           android:key="key_temperature_unit"
@@ -59,6 +64,11 @@
           android:title="@string/label_color"
           android:defaultValue="@color/default_color"
           alphaSlider="true" />
+
+      <com.ulduzsoft.preferences.FontPreference
+          android:id="@+id/view_font"
+          android:key="key_font"
+          android:title="@string/label_font" />
 
   </PreferenceCategory>
 </PreferenceScreen>

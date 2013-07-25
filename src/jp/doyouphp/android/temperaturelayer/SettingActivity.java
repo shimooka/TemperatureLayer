@@ -35,6 +35,7 @@ import android.preference.PreferenceManager;
 public class SettingActivity extends PreferenceActivity {
 	private static final String[] PREFERENCE_KEYS = {
 			TemperatureLayerConfig.KEY_START_ON_BOOT,
+			TemperatureLayerConfig.KEY_NOTIFICATION,
 			TemperatureLayerConfig.KEY_TEMPERATURE_UNIT,
 			TemperatureLayerConfig.KEY_LAYOUT,
 			TemperatureLayerConfig.KEY_TEXT_SIZE,
@@ -101,6 +102,10 @@ public class SettingActivity extends PreferenceActivity {
 			preference
 					.setSummary(config.isStartOnBoot() ? getString(R.string.start_on_boot_yes)
 							: getString(R.string.start_on_boot_no));
+		} else if (key.equals(TemperatureLayerConfig.KEY_NOTIFICATION)) {
+			preference
+					.setSummary(config.isNotify() ? getString(R.string.notification_yes)
+							: getString(R.string.notification_no));
 		} else if (key.equals(TemperatureLayerConfig.KEY_COLOR)) {
 			// nop
 		} else if (key.equals(TemperatureLayerConfig.KEY_LAYOUT)) {

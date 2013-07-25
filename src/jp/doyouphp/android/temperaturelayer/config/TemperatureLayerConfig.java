@@ -28,10 +28,12 @@ import android.preference.PreferenceManager;
  */
 public final class TemperatureLayerConfig {
 	public static final String KEY_START_ON_BOOT = "key_start_on_boot";
+	public static final String KEY_NOTIFICATION = "key_notification";
 	public static final String KEY_TEMPERATURE_UNIT = "key_temperature_unit";
 	public static final String KEY_LAYOUT = "key_layout";
 	public static final String KEY_TEXT_SIZE = "key_text_size";
 	public static final String KEY_COLOR = "key_color";
+	public static final String KEY_FONT = "key_font";
 	private static final String KEY_INITIALIZED = "key_initialized";
 
 	private Context mContext;
@@ -59,6 +61,7 @@ public final class TemperatureLayerConfig {
 			mSharedPreferences
 					.edit()
 					.putBoolean(KEY_START_ON_BOOT, false)
+					.putBoolean(KEY_NOTIFICATION, false)
 					.putString(
 							KEY_TEMPERATURE_UNIT,
 							mContext.getResources().getString(
@@ -106,5 +109,13 @@ public final class TemperatureLayerConfig {
 
 	public void reset() {
 		initialize(true);
+	}
+	
+	public boolean isNotify() {
+		return mSharedPreferences.getBoolean(KEY_NOTIFICATION, false);
+	}
+	
+	public String getFontPath() {
+		return mSharedPreferences.getString(KEY_FONT, null);
 	}
 }

@@ -21,6 +21,8 @@ import jp.doyouphp.android.temperaturelayer.TemperatureLayerActivity;
 import jp.doyouphp.android.temperaturelayer.config.TemperatureLayerConfig;
 
 import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,6 +30,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.Typeface;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,115 +40,131 @@ import android.widget.TextView;
 
 /**
  * the main service class of {@link TemperatureLayerActivity}
- * 
+ *
  * This service will register a BroadcastReceiver which receives
  * Intent.ACTION_BATTERY_CHANGED and update battery temperature string on
  * inflated layer.
  */
 public class TemperatureLayerService extends Service {
-	View mView;
-	WindowManager mWindowManager;
-	TemperatureLayerConfig mConfig;
-	public static boolean isTest = false;
+    View mView;
+    WindowManager mWindowManager;
+    TemperatureLayerConfig mConfig;
+    public static boolean isTest = false;
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		mConfig = new TemperatureLayerConfig(getApplicationContext());
-	}
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mConfig = new TemperatureLayerConfig(getApplicationContext());
+    }
 
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		if (!isTest) {
-			// require API Level 5
-			startForeground(1, new Notification());
-		}
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (!isTest) {
+            // require API Level 5
+            startForeground(1, new Notification());
+        }
 
-		mView = LayoutInflater.from(this).inflate(R.layout.overlay, null);
-		TextView text = (TextView) mView.findViewById(R.id.currentTemperature);
-		text.setTextSize(mConfig.getTextSize());
-		int color = mConfig.getColor();
-		text.setTextColor(Color.argb(Color.alpha(color), Color.red(color),
-				Color.green(color), Color.blue(color)));
+        mView = LayoutInflater.from(this).inflate(R.layout.overlay, null);
+        TextView text = (TextView) mView.findViewById(R.id.currentTemperature);
+        text.setTextSize(mConfig.getTextSize());
+        if (mConfig.getFontPath() != null) {
+	        text.setTypeface(Typeface.createFromFile(mConfig.getFontPath()));
+        }
+        int color = mConfig.getColor();
+        text.setTextColor(Color.argb(Color.alpha(color), Color.red(color),
+                Color.green(color), Color.blue(color)));
 
-		WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-				WindowManager.LayoutParams.WRAP_CONTENT,
-				WindowManager.LayoutParams.WRAP_CONTENT,
-				WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-				WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-						| WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-						| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-				PixelFormat.TRANSLUCENT);
-		params.gravity = mConfig.getLayout();
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+        params.gravity = mConfig.getLayout();
 
-		mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-		mWindowManager.addView(mView, params);
+        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        mWindowManager.addView(mView, params);
 
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(Intent.ACTION_BATTERY_CHANGED);
-		registerReceiver(broadcastReceiver, filter);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(broadcastReceiver, filter);
 
-		Log.v(TemperatureLayerActivity.TAG,
-				"TemperatureLayerService started : id=" + startId + " with "
-						+ intent);
+        Log.v(TemperatureLayerActivity.TAG,
+                "TemperatureLayerService started : id=" + startId + " with "
+                        + intent);
 
-		return START_STICKY;
-	}
+        return START_STICKY;
+    }
 
-	@Override
-	public void onDestroy() {
-		try {
-			unregisterReceiver(broadcastReceiver);
-		} catch (IllegalArgumentException e) {
-			if (!isTest) {
-				Log.e(TemperatureLayerActivity.TAG, e.getMessage());
-			}
-		}
+    @Override
+    public void onDestroy() {
+        try {
+            unregisterReceiver(broadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            if (!isTest) {
+                Log.e(TemperatureLayerActivity.TAG, e.getMessage());
+            }
+        }
 
-		if (mWindowManager != null) {
-			mWindowManager.removeView(mView);
-		}
+        if (mWindowManager != null) {
+            mWindowManager.removeView(mView);
+        }
 
-		Log.v(TemperatureLayerActivity.TAG, "Service stopped");
-	}
+        Log.v(TemperatureLayerActivity.TAG, "Service stopped");
+    }
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		return null;
-	}
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
-	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @SuppressWarnings("deprecation")
 		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			Log.v(TemperatureLayerActivity.TAG, "action : " + action);
+            String action = intent.getAction();
+            Log.v(TemperatureLayerActivity.TAG, "action : " + action);
 
-			if (action != null && action.equals(Intent.ACTION_BATTERY_CHANGED)) {
-				int temperature = intent.getIntExtra("temperature", 0);
-				String temperatureString = getTemperatureAsString(context,
-						temperature);
+            if (action != null && action.equals(Intent.ACTION_BATTERY_CHANGED)) {
+                int temperature = intent.getIntExtra("temperature", 0);
+                String temperatureString = getTemperatureAsString(context,
+                        temperature);
 
-				TextView text = (TextView) mView
-						.findViewById(R.id.currentTemperature);
-				text.setText(temperatureString);
-				Log.v(TemperatureLayerActivity.TAG, "current : "
-						+ temperatureString);
-			}
-		}
+                TextView text = (TextView) mView
+                        .findViewById(R.id.currentTemperature);
+                text.setText(temperatureString);
+                Log.v(TemperatureLayerActivity.TAG, "current : "
+                        + temperatureString);
 
-		private String getTemperatureAsString(Context context, int temperature) {
-			final String celsiusUnit = context
-					.getString(R.string.default_temperature_unit);
-			final String currentUnit = mConfig.getTemperatureUnit();
-			boolean useCelsius = currentUnit.equals(celsiusUnit);
+                if (mConfig.isNotify()) {
+	                NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+	                Notification notification = new Notification();
+	                Intent i = new Intent(getApplicationContext(), TemperatureLayerActivity.class);
+	                PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
+	                notification.icon = R.drawable.ic_stat_name;
+	                notification.tickerText = "Current battery temperature is " + temperatureString;
+	                notification.setLatestEventInfo(getApplicationContext(), "Temperature Layer", temperatureString, pi);
+	
+	                notificationManager.notify(1, notification);
+                }
+            }
+        }
 
-			return context.getString(R.string.string_degree,
-					calculateTemperature(temperature, useCelsius),
-					mConfig.getTemperatureUnit());
-		}
-	};
+        private String getTemperatureAsString(Context context, int temperature) {
+            final String celsiusUnit = context
+                    .getString(R.string.default_temperature_unit);
+            final String currentUnit = mConfig.getTemperatureUnit();
+            boolean useCelsius = currentUnit.equals(celsiusUnit);
 
-	public double calculateTemperature(int temperature, boolean useCelsius) {
-		return Math.floor(useCelsius ? temperature
-				: temperature * 9f / 5f + 320) / 10;
-	}
+            return context.getString(R.string.string_degree,
+                    calculateTemperature(temperature, useCelsius),
+                    mConfig.getTemperatureUnit());
+        }
+    };
+
+    public double calculateTemperature(int temperature, boolean useCelsius) {
+        return Math.floor(useCelsius ? temperature
+                : temperature * 9f / 5f + 320) / 10;
+    }
 }
