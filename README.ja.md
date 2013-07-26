@@ -10,8 +10,10 @@ Temperature Layerは[Google Play]から入手できます。
 - Android2.0以降に対応
 - バッテリー温度を画面上に透明なレイヤをかぶせて表示
 - 端末起動時の自動起動を設定可能
+- ステータスバーに温度通知を表示可能
 - 単位は摂氏(°C)、華氏(°F)から選択
 - 表示位置はスクリーンの四隅から選択(ステータスバーの上にも表示可能)
+- デバイスにインストールされているフォントを選択可能
 - テキストサイズは6～100sp(scaled-pixel)、テキスト色は透明度も含めて指定可能
 - 英語と日本語に対応
 - 無料です！
@@ -22,10 +24,13 @@ Temperature Layerは[Google Play]から入手できます。
 
 謝辞
 ----
-このアプリケーションは[Android Color Picker]を使用しています。作者のyukuku氏に感謝！
+このアプリケーションは以下のライブラリを使用しています。それぞれの作者さんに感謝！
+- [Android Color Picker]
+- [FontPreference dialog for Android] (一部修正版)
 
 リリース履歴
 ------------
+- 2013/07/26 ver.1.0.1 - フォント選択機能を追加
 - 2013/06/26 ver.1.0.0 - 正式版リリース
 - 2013/06/25 ver.0.9.3 - ステータスバー上にも表示可能に
 - 2013/06/24 ver.0.9.2 - 内部構造を改善
@@ -33,10 +38,11 @@ Temperature Layerは[Google Play]から入手できます。
 
 ライセンス
 ----------
-Copyright &copy; 2013 Hideyuki SHIMOOKA &lt;shimooka@doyouphp.jp&gt;
+Copyright &copy; 2013 Hideyuki SHIMOOKA &lt;shimooka@doyouphp.jp&gt; 
 Licensed under the [Apache License, Version 2.0][Apache]
 
 [Apache]: http://www.apache.org/licenses/LICENSE-2.0
 [Android Color Picker]: https://code.google.com/p/android-color-picker/
 [Temperature Layer]: https://play.google.com/store/apps/details?id=jp.doyouphp.android.temperaturelayer
 [Google Play]: https://play.google.com/store/apps/details?id=jp.doyouphp.android.temperaturelayer
+[FontPreference dialog for Android]: http://www.ulduzsoft.com/2012/01/fontpreference-dialog-for-android/

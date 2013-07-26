@@ -41,6 +41,7 @@ public class SettingActivity extends PreferenceActivity {
 			TemperatureLayerConfig.KEY_TEMPERATURE_UNIT,
 			TemperatureLayerConfig.KEY_LAYOUT,
 			TemperatureLayerConfig.KEY_TEXT_SIZE,
+			TemperatureLayerConfig.KEY_FONT,
 			TemperatureLayerConfig.KEY_COLOR };
 	private Map<String, String> mLayouts = new HashMap<String, String>();
 

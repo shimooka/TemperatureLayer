@@ -51,6 +51,8 @@ public class TemperatureLayerReceiver extends BroadcastReceiver {
                         .getDataString().equals(
                                 "package:jp.doyouphp.android.temperaturelayer"))) {
             Log.v(TemperatureLayerActivity.TAG, "send intent");
+            context.stopService(new Intent(context,
+                    TemperatureLayerService.class));
             context.startService(new Intent(context,
                     TemperatureLayerService.class));
         }

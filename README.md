@@ -9,8 +9,10 @@ Feature
 - Android2.0 or later
 - The battery temperature will be displayed on the transparent layer
 - Automatic start on boot
+- Switch temperature notification on status bar
 - Celsius (°C) or Fahrenheit (°F)
 - A display position is chosen from the four corners of a screen (on a status bar is possible)
+- Choose your favorite font in device
 - Customize text size and text color with transparency
 - English and Japanese translation
 - ... and for FREE !
@@ -21,10 +23,14 @@ Screen capture
 
 Acknowledgement
 ---------------
-This application use [Android Color Picker]. Thanks for yukuku's great works !
+This application use following libraries. Thanks for author's great works !
+
+- [Android Color Picker]
+- [FontPreference dialog for Android] (modified version)
 
 Releases
 --------
+- 2013/07/26 ver.1.0.1 - added font chooser and notification
 - 2013/06/26 ver.1.0.0 - first stable release
 - 2013/06/25 ver.0.9.3 - display on a status bar is possible
 - 2013/06/24 ver.0.9.2 - internal refactored
@@ -39,3 +45,4 @@ Licensed under the [Apache License, Version 2.0][Apache]
 [Android Color Picker]: https://code.google.com/p/android-color-picker/
 [Temperature Layer]: https://play.google.com/store/apps/details?id=jp.doyouphp.android.temperaturelayer
 [Google Play]: https://play.google.com/store/apps/details?id=jp.doyouphp.android.temperaturelayer
+[FontPreference dialog for Android]: http://www.ulduzsoft.com/2012/01/fontpreference-dialog-for-android/
