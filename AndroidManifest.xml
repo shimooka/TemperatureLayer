@@ -16,14 +16,15 @@
  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.doyouphp.android.temperaturelayer"
-    android:versionCode="10120130726"
-    android:versionName="1.0.1" >
+    android:versionCode="10220140509"
+    android:versionName="1.0.2" >
 
     <uses-sdk
         android:minSdkVersion="5"
         android:targetSdkVersion="17" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"

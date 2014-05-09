@@ -23,99 +23,137 @@ import android.preference.PreferenceManager;
 
 /**
  * Configuration class
- * 
+ *
  * This class is an interface to access configuration in SharedPreferences.
  */
 public final class TemperatureLayerConfig {
-	public static final String KEY_START_ON_BOOT = "key_start_on_boot";
-	public static final String KEY_NOTIFICATION = "key_notification";
-	public static final String KEY_TEMPERATURE_UNIT = "key_temperature_unit";
-	public static final String KEY_LAYOUT = "key_layout";
-	public static final String KEY_TEXT_SIZE = "key_text_size";
-	public static final String KEY_COLOR = "key_color";
-	public static final String KEY_FONT = "key_font";
-	private static final String KEY_INITIALIZED = "key_initialized";
+    public static final String KEY_START_ON_BOOT = "key_start_on_boot";
+    public static final String KEY_NOTIFICATION = "key_notification";
+    public static final String KEY_TEMPERATURE_UNIT = "key_temperature_unit";
+    public static final String KEY_LAYOUT = "key_layout";
+    public static final String KEY_TEXT_SIZE = "key_text_size";
+    public static final String KEY_COLOR = "key_color";
+    public static final String KEY_FONT = "key_font";
+    public static final String KEY_ALERT = "key_alert";
+    public static final String KEY_RING = "key_ring";
+    public static final String KEY_VIBRATION = "key_vibration";
+    public static final String KEY_RINGTONE = "key_ringtone";
+    private static final String KEY_TEMPERATURE_THRESHOLD = "key_temperature_threshold";
 
-	private Context mContext;
-	private SharedPreferences mSharedPreferences;
+    private static final String KEY_INITIALIZED = "key_initialized";
 
-	public TemperatureLayerConfig(Context context) {
-		this(context, PreferenceManager.getDefaultSharedPreferences(context));
-	}
+    private Context mContext;
+    private SharedPreferences mSharedPreferences;
 
-	public TemperatureLayerConfig(Context context,
-			SharedPreferences sharedPreferences) {
-		mContext = context;
-		mSharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
+    public TemperatureLayerConfig(Context context) {
+        this(context, PreferenceManager.getDefaultSharedPreferences(context));
+    }
 
-		initialize();
-	}
+    public TemperatureLayerConfig(Context context,
+            SharedPreferences sharedPreferences) {
+        mContext = context;
+        mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
 
-	private void initialize() {
-		initialize(false);
-	}
+        initialize();
+    }
 
-	private void initialize(boolean force) {
-		if (force || !isInitialized()) {
-			mSharedPreferences
-					.edit()
-					.putBoolean(KEY_START_ON_BOOT, false)
-					.putBoolean(KEY_NOTIFICATION, false)
-					.putString(
-							KEY_TEMPERATURE_UNIT,
-							mContext.getResources().getString(
-									R.string.default_temperature_unit))
-					.putInt(KEY_LAYOUT,
-							mContext.getResources().getInteger(
-									R.integer.default_layout))
-					.putInt(KEY_TEXT_SIZE,
-							mContext.getResources().getInteger(
-									R.integer.default_text_size))
-					.putInt(KEY_COLOR,
-							mContext.getResources().getColor(
-									R.color.default_color))
-					.putBoolean(KEY_INITIALIZED, true).commit();
-		}
-	}
+    private void initialize() {
+        initialize(false);
+    }
 
-	private boolean isInitialized() {
-		return mSharedPreferences.getBoolean(KEY_INITIALIZED, false) == true;
-	}
+    private void initialize(boolean force) {
+        if (force || !isInitialized()) {
+            mSharedPreferences
+                    .edit()
+                    .putBoolean(KEY_START_ON_BOOT, false)
+                    .putBoolean(KEY_NOTIFICATION, false)
+                    .putString(
+                            KEY_TEMPERATURE_UNIT,
+                            mContext.getResources().getString(
+                                    R.string.default_temperature_unit))
+                    .putInt(KEY_LAYOUT,
+                            mContext.getResources().getInteger(
+                                    R.integer.default_layout))
+                    .putInt(KEY_TEXT_SIZE,
+                            mContext.getResources().getInteger(
+                                    R.integer.default_text_size))
+                    .putInt(KEY_COLOR,
+                            mContext.getResources().getColor(
+                                    R.color.default_color))
+                    .putBoolean(KEY_INITIALIZED, true).commit();
+        }
+    }
 
-	public boolean isStartOnBoot() {
-		return mSharedPreferences.getBoolean(KEY_START_ON_BOOT, false);
-	}
+    private boolean isInitialized() {
+        return mSharedPreferences.getBoolean(KEY_INITIALIZED, false) == true;
+    }
 
-	public String getTemperatureUnit() {
-		return mSharedPreferences.getString(KEY_TEMPERATURE_UNIT, mContext
-				.getResources().getString(R.string.default_temperature_unit));
-	}
+    public boolean isStartOnBoot() {
+        return mSharedPreferences.getBoolean(KEY_START_ON_BOOT, false);
+    }
 
-	public int getTextSize() {
-		return mSharedPreferences.getInt(KEY_TEXT_SIZE, mContext.getResources()
-				.getInteger(R.integer.default_text_size));
-	}
+    public String getTemperatureUnit() {
+        return mSharedPreferences.getString(KEY_TEMPERATURE_UNIT, mContext
+                .getResources().getString(R.string.default_temperature_unit));
+    }
 
-	public int getLayout() {
-		return mSharedPreferences.getInt(KEY_LAYOUT, mContext.getResources()
-				.getInteger(R.integer.default_layout));
-	}
+    public int getTextSize() {
+        return mSharedPreferences.getInt(KEY_TEXT_SIZE, mContext.getResources()
+                .getInteger(R.integer.default_text_size));
+    }
 
-	public int getColor() {
-		return mSharedPreferences.getInt(KEY_COLOR, mContext.getResources()
-				.getInteger(R.color.default_color));
-	}
+    public int getLayout() {
+        return mSharedPreferences.getInt(KEY_LAYOUT, mContext.getResources()
+                .getInteger(R.integer.default_layout));
+    }
 
-	public void reset() {
-		initialize(true);
-	}
-	
-	public boolean isNotify() {
-		return mSharedPreferences.getBoolean(KEY_NOTIFICATION, false);
-	}
-	
-	public String getFontPath() {
-		return mSharedPreferences.getString(KEY_FONT, null);
+    public int getColor() {
+        return mSharedPreferences.getInt(KEY_COLOR, mContext.getResources()
+                .getInteger(R.color.default_color));
+    }
+
+    public void reset() {
+        initialize(true);
+    }
+
+    public boolean isNotify() {
+        return mSharedPreferences.getBoolean(KEY_NOTIFICATION, false);
+    }
+
+    public boolean isAlert() {
+        return mSharedPreferences.getBoolean(KEY_ALERT, false);
+    }
+
+    public boolean withRing() {
+        return mSharedPreferences.getBoolean(KEY_RING, false);
+    }
+
+    public boolean withVibration() {
+        return mSharedPreferences.getBoolean(KEY_VIBRATION, false);
+    }
+
+    public String getFontPath() {
+        return mSharedPreferences.getString(KEY_FONT, null);
+    }
+
+    public String getRingtone() {
+        return mSharedPreferences.getString(KEY_RINGTONE, null);
+    }
+
+    public int getTemperatureThreshold() {
+        return mSharedPreferences.getInt(KEY_TEMPERATURE_THRESHOLD, mContext.getResources()
+                .getInteger(R.integer.default_layout));
+    }
+
+    public boolean useCelsius() {
+        final String celsiusUnit = mContext
+                .getString(R.string.default_temperature_unit);
+        final String currentUnit = getTemperatureUnit();
+        return currentUnit.equals(celsiusUnit);
+    }
+
+	public Context getContext() {
+		return mContext;
 	}
 }

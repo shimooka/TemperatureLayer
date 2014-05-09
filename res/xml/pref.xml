@@ -15,21 +15,22 @@
  * limitations under the License.
  -->
 <PreferenceScreen
+  android:title="@string/app_name"
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:title="@string/app_name">
+  xmlns:robobunny="http://robobunny.com">
 
   <PreferenceCategory
-      android:title="@string/preference_header">
+      android:title="@string/preference_header_boot">
 
       <CheckBoxPreference
           android:id="@+id/view_start_on_boot"
           android:key="key_start_on_boot"
           android:title="@string/label_start_on_boot"/>
 
-      <CheckBoxPreference
-          android:id="@+id/view_notification"
-          android:key="key_notification"
-          android:title="@string/label_notification"/>
+
+  </PreferenceCategory>
+  <PreferenceCategory
+      android:title="@string/preference_header_display">
 
       <ListPreference
           android:id="@+id/view_temperature_unit"
@@ -69,6 +70,80 @@
           android:title="@string/label_color"
           android:defaultValue="@color/default_color"
           alphaSlider="true" />
+
+  </PreferenceCategory>
+  <PreferenceCategory
+      android:title="@string/preference_header_notification">
+
+      <CheckBoxPreference
+          android:id="@+id/view_notification"
+          android:key="key_notification"
+          android:title="@string/label_notification"/>
+
+  </PreferenceCategory>
+  <PreferenceCategory
+      android:title="@string/preference_header_alert">
+
+      <CheckBoxPreference
+          android:id="@+id/view_alert"
+          android:key="key_alert"
+          android:title="@string/label_alert"/>
+
+      <com.google.android.apps.mytracks.IntegerListPreference
+          android:id="@+id/view_temperature_threshold"
+          android:key="key_temperature_threshold"
+          android:title="@string/label_temperature_threshold"
+          android:dialogTitle="@string/dialogtitle_temperature_threshold"
+          android:entries="@array/entries_temperature_threshold"
+          android:entryValues="@array/values_temperature_threshold"
+          android:defaultValue="@integer/default_temperature_threshold"
+          android:dependency="key_alert"/>
+
+<!--
+      <PreferenceScreen
+          android:title="@string/preference_header_temperature_threshold">
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:robobunny="http://robobunny.com">
+
+          <com.robobunny.SeekBarPreference
+              android:id="@+id/view_temperature_threshold"
+              android:key="key_temperature_threshold"
+              android:title="@string/label_temperature_threshold"
+              android:defaultValue="50"
+              android:max="80"
+              robobunny:min="30"
+              robobunny:unitsLeft=""
+              robobunny:unitsRight=""/>
+          <net.jayschwa.android.preference.SliderPreference
+              android:key="my_slider"
+              android:title="@string/slider_title"
+              android:summary="@array/slider_summaries"
+              android:defaultValue="@string/slider_default"
+              android:dialogMessage="@string/slider_message" />
+
+      </PreferenceScreen>
+-->
+
+      <CheckBoxPreference
+          android:id="@+id/view_ring"
+          android:key="key_ring"
+          android:title="@string/label_ring"
+          android:dependency="key_alert"/>
+
+      <RingtonePreference
+          android:id="@+id/view_ringtone"
+          android:key="key_ringtone"
+          android:title="@string/label_ringtone"
+          android:ringtoneType="notification"
+          android:showDefault="true"
+          android:showSilent="false"
+          android:dependency="key_ring"/>
+
+      <CheckBoxPreference
+          android:id="@+id/view_vibration"
+          android:key="key_vibration"
+          android:title="@string/label_vibration"
+          android:dependency="key_alert"/>
 
   </PreferenceCategory>
 </PreferenceScreen>

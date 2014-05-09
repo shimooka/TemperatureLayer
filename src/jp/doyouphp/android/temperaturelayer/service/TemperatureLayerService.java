@@ -31,7 +31,11 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +72,7 @@ public class TemperatureLayerService extends Service {
         TextView text = (TextView) mView.findViewById(R.id.currentTemperature);
         text.setTextSize(mConfig.getTextSize());
         if (mConfig.getFontPath() != null) {
-	        text.setTypeface(Typeface.createFromFile(mConfig.getFontPath()));
+            text.setTypeface(Typeface.createFromFile(mConfig.getFontPath()));
         }
         int color = mConfig.getColor();
         text.setTextColor(Color.argb(Color.alpha(color), Color.red(color),
@@ -122,13 +126,13 @@ public class TemperatureLayerService extends Service {
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @SuppressWarnings("deprecation")
-		public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Log.v(TemperatureLayerActivity.TAG, "action : " + action);
 
             if (action != null && action.equals(Intent.ACTION_BATTERY_CHANGED)) {
                 int temperature = intent.getIntExtra("temperature", 0);
-                String temperatureString = getTemperatureAsString(context,
+                String temperatureString = getTemperatureAsString(mConfig,
                         temperature);
 
                 TextView text = (TextView) mView
@@ -138,32 +142,66 @@ public class TemperatureLayerService extends Service {
                         + temperatureString);
 
                 if (mConfig.isNotify()) {
-	                NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-	                Notification notification = new Notification();
-	                Intent i = new Intent(getApplicationContext(), TemperatureLayerActivity.class);
-	                PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
-	                notification.icon = R.drawable.ic_stat_name;
-	                notification.tickerText = "Current battery temperature is " + temperatureString;
-	                notification.setLatestEventInfo(getApplicationContext(), "Temperature Layer", temperatureString, pi);
-	
-	                notificationManager.notify(1, notification);
+                    NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                    Notification notification = new Notification();
+                    Intent i = new Intent(getApplicationContext(), TemperatureLayerActivity.class);
+                    PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, i, 0);
+                    notification.icon = R.drawable.ic_stat_name;
+                    notification.tickerText = "Current battery temperature is " + temperatureString;
+                    notification.setLatestEventInfo(getApplicationContext(), "Temperature Layer", temperatureString, pi);
+
+                    notificationManager.notify(1, notification);
+                }
+
+                if (temperature >= mConfig.getTemperatureThreshold()) {
+                    if (mConfig.withVibration()) {
+                        Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                        vibrator.vibrate(1000);
+                    }
+
+                    if (mConfig.withRing()) {
+                        Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), Uri.parse(mConfig.getRingtone()));
+                        ringtone.play();
+/*
+                        MediaPlayer mMediaPlayer = new MediaPlayer();
+                        try {
+                            mMediaPlayer.setDataSource(getApplicationContext(), Uri.parse(mConfig.getRingtone()));
+                            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+                            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mediaPlayer) {
+                                    mediaPlayer.release();
+                                }
+                            });
+                            mMediaPlayer.prepare();
+                        } catch (Exception e) {
+                            Log.e(TemperatureLayerActivity.TAG, e.getMessage());
+                            mMediaPlayer.stop();
+                            mMediaPlayer.release();
+                            return;
+                        }
+                        mMediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                            @Override
+                            public void onSeekComplete(MediaPlayer mediaPlayer) {
+                                mediaPlayer.stop();
+                            }
+                        });
+                        mMediaPlayer.start();
+*/
+                    }
                 }
             }
         }
 
-        private String getTemperatureAsString(Context context, int temperature) {
-            final String celsiusUnit = context
-                    .getString(R.string.default_temperature_unit);
-            final String currentUnit = mConfig.getTemperatureUnit();
-            boolean useCelsius = currentUnit.equals(celsiusUnit);
-
-            return context.getString(R.string.string_degree,
-                    calculateTemperature(temperature, useCelsius),
-                    mConfig.getTemperatureUnit());
-        }
     };
 
-    public double calculateTemperature(int temperature, boolean useCelsius) {
+    public static String getTemperatureAsString(TemperatureLayerConfig config, int temperature) {
+        return config.getContext().getString(R.string.string_degree,
+                calculateTemperature(temperature, config.useCelsius()),
+                config.getTemperatureUnit());
+    }
+    
+    public static double calculateTemperature(int temperature, boolean useCelsius) {
         return Math.floor(useCelsius ? temperature
                 : temperature * 9f / 5f + 320) / 10;
     }

@@ -15,7 +15,9 @@
  * limitations under the License.
  -->
 <resources>
-    <string name="preference_header">Setting</string>
+    <string name="preference_header_boot">On boot setting</string>
+    <string name="preference_header_display">Display setting</string>
+    <string name="preference_header_notification">Notification setting</string>
 
     <string name="size_unit" translatable="false">%1$d sp</string>
 
@@ -266,5 +268,49 @@
     <!-- 85 = right-bottom -->
     <integer name="default_layout">85</integer>
     <color name="default_color">#ffffffff</color>
+
+    <string name="preference_header_alert">Alert setting</string>
+    <string name="label_alert">High temperature alert</string>
+    <string name="alert_yes">High temperature alert is enabled</string>
+    <string name="alert_no">High temperature alert is disabled</string>
+    <string name="label_ring">With ringtone</string>
+    <string name="ring_yes">alert with ringtone</string>
+    <string name="ring_no">alert without ringtone</string>
+    <string name="label_ringtone">Ringtone</string>
+    <string name="label_vibration">With vibration</string>
+    <string name="vibration_yes">alert with vibration</string>
+    <string name="vibration_no">alert without vibration</string>
+
+    <string name="preference_header_temperature_threshold">Temperature threshold</string>
+    <string name="label_temperature_threshold">Temperature threshold</string>
+    <string name="dialogtitle_temperature_threshold">Select temperature threshold</string>
+    <integer name="default_temperature_threshold">500</integer>
+    <string-array name="entries_temperature_threshold">
+        <item >40°C / 104°F</item>
+        <item >45°C / 113°F</item>
+        <item >50°C / 122°F</item>
+        <item >55°C / 131°F</item>
+        <item >60°C / 140°F</item>
+        <item >65°C / 149°F</item>
+        <item >70°C / 158°F</item>
+        <item >75°C / 167°F</item>
+        <item >80°C / 176°F</item>
+        <item >85°C / 185°F</item>
+        <item >90°C / 194°F</item>
+    </string-array>
+    <string-array name="values_temperature_threshold" translatable="false">
+        <item >400</item>
+        <item >450</item>
+        <item >500</item>
+        <item >550</item>
+        <item >600</item>
+        <item >650</item>
+        <item >700</item>
+        <item >750</item>
+        <item >800</item>
+        <item >850</item>
+        <item >900</item>
+    </string-array>
+
 
 </resources>
