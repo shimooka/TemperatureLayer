@@ -15,6 +15,7 @@ Feature
 - Choose your favorite font in device
 - Customize text size and text color with transparency
 - English and Japanese translation
+- High temperature alert with notification sound and vibration (ver.1.0.2)
 - ... and for FREE !
 
 Screen capture
@@ -30,6 +31,7 @@ This application use following libraries. Thanks for author's great works !
 
 Releases
 --------
+- 2014/05/09 ver.1.0.2 - added high temperature alert
 - 2013/07/26 ver.1.0.1 - added font chooser and notification
 - 2013/06/26 ver.1.0.0 - first stable release
 - 2013/06/25 ver.0.9.3 - display on a status bar is possible
@@ -38,7 +40,7 @@ Releases
 
 License
 -------
-Copyright &copy; 2013 Hideyuki SHIMOOKA &lt;shimooka@doyouphp.jp&gt;
+Copyright &copy; 2013,2014 Hideyuki SHIMOOKA &lt;shimooka@doyouphp.jp&gt;
 Licensed under the [Apache License, Version 2.0][Apache]
 
 [Apache]: http://www.apache.org/licenses/LICENSE-2.0

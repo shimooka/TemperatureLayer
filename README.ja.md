@@ -16,6 +16,7 @@ Temperature Layerは[Google Play]から入手できます。
 - デバイスにインストールされているフォントを選択可能
 - テキストサイズは6～100sp(scaled-pixel)、テキスト色は透明度も含めて指定可能
 - 英語と日本語に対応
+- 高温時のアラート機能(通知音、バイブレーション) (ver.1.0.2以降)
 - 無料です！
 
 画面キャプチャ
@@ -30,6 +31,7 @@ Temperature Layerは[Google Play]から入手できます。
 
 リリース履歴
 ------------
+- 2014/05/09 ver.1.0.2 - 高温時のアラート機能を追加
 - 2013/07/26 ver.1.0.1 - フォント選択機能を追加
 - 2013/06/26 ver.1.0.0 - 正式版リリース
 - 2013/06/25 ver.0.9.3 - ステータスバー上にも表示可能に
@@ -38,7 +40,7 @@ Temperature Layerは[Google Play]から入手できます。
 
 ライセンス
 ----------
-Copyright &copy; 2013 Hideyuki SHIMOOKA &lt;shimooka@doyouphp.jp&gt; 
+Copyright &copy; 2013,2014 Hideyuki SHIMOOKA &lt;shimooka@doyouphp.jp&gt; 
 Licensed under the [Apache License, Version 2.0][Apache]
 
 [Apache]: http://www.apache.org/licenses/LICENSE-2.0
