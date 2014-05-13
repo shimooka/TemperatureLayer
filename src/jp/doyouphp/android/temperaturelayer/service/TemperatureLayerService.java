@@ -159,8 +159,8 @@ public class TemperatureLayerService extends Service {
                         vibrator.vibrate(1000);
                     }
 
-                    if (mConfig.withRing()) {
-                        Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), Uri.parse(mConfig.getRingtone()));
+                    if (mConfig.withSound()) {
+                        Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), Uri.parse(mConfig.getAlertSound()));
                         ringtone.play();
 /*
                         MediaPlayer mMediaPlayer = new MediaPlayer();
@@ -200,7 +200,7 @@ public class TemperatureLayerService extends Service {
                 calculateTemperature(temperature, config.useCelsius()),
                 config.getTemperatureUnit());
     }
-    
+
     public static double calculateTemperature(int temperature, boolean useCelsius) {
         return Math.floor(useCelsius ? temperature
                 : temperature * 9f / 5f + 320) / 10;

@@ -125,19 +125,19 @@
 -->
 
       <CheckBoxPreference
-          android:id="@+id/view_ring"
-          android:key="key_ring"
-          android:title="@string/label_ring"
+          android:id="@+id/view_sound"
+          android:key="key_sound"
+          android:title="@string/label_sound"
           android:dependency="key_alert"/>
 
       <RingtonePreference
-          android:id="@+id/view_ringtone"
-          android:key="key_ringtone"
-          android:title="@string/label_ringtone"
+          android:id="@+id/view_alert_sound"
+          android:key="key_alert_sound"
+          android:title="@string/label_alert_sound"
           android:ringtoneType="notification"
           android:showDefault="true"
           android:showSilent="false"
-          android:dependency="key_ring"/>
+          android:dependency="key_sound"/>
 
       <CheckBoxPreference
           android:id="@+id/view_vibration"

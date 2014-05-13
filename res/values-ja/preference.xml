@@ -62,10 +62,10 @@
     <string name="label_alert">アラート</string>
     <string name="alert_yes">アラートは有効です</string>
     <string name="alert_no">アラートは無効です</string>
-    <string name="label_ring">通知音</string>
-    <string name="ring_yes">通知音を鳴らします</string>
-    <string name="ring_no">通知音を鳴らしません</string>
-    <string name="label_ringtone">通知音</string>
+    <string name="label_sound">通知音</string>
+    <string name="sound_yes">通知音を鳴らします</string>
+    <string name="sound_no">通知音を鳴らしません</string>
+    <string name="label_alert_sound">通知音</string>
     <string name="label_vibration">バイブレーション</string>
     <string name="vibration_yes">バイブレーションで通知します</string>
     <string name="vibration_no">バイブレーションで通知しません</string>

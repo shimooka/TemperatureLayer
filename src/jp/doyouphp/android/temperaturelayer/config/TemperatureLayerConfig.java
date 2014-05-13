@@ -20,6 +20,7 @@ import jp.doyouphp.android.temperaturelayer.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 
 /**
  * Configuration class
@@ -35,10 +36,10 @@ public final class TemperatureLayerConfig {
     public static final String KEY_COLOR = "key_color";
     public static final String KEY_FONT = "key_font";
     public static final String KEY_ALERT = "key_alert";
-    public static final String KEY_RING = "key_ring";
+    public static final String KEY_SOUND = "key_sound";
+	public static final String KEY_ALERT_SOUND = "key_alert_sound";
     public static final String KEY_VIBRATION = "key_vibration";
-    public static final String KEY_RINGTONE = "key_ringtone";
-    private static final String KEY_TEMPERATURE_THRESHOLD = "key_temperature_threshold";
+    public static final String KEY_TEMPERATURE_THRESHOLD = "key_temperature_threshold";
 
     private static final String KEY_INITIALIZED = "key_initialized";
 
@@ -81,6 +82,7 @@ public final class TemperatureLayerConfig {
                     .putInt(KEY_COLOR,
                             mContext.getResources().getColor(
                                     R.color.default_color))
+                    .putString(KEY_ALERT_SOUND, Settings.System.DEFAULT_NOTIFICATION_URI.toString())
                     .putBoolean(KEY_INITIALIZED, true).commit();
         }
     }
@@ -125,8 +127,8 @@ public final class TemperatureLayerConfig {
         return mSharedPreferences.getBoolean(KEY_ALERT, false);
     }
 
-    public boolean withRing() {
-        return mSharedPreferences.getBoolean(KEY_RING, false);
+    public boolean withSound() {
+        return mSharedPreferences.getBoolean(KEY_SOUND, false);
     }
 
     public boolean withVibration() {
@@ -137,8 +139,8 @@ public final class TemperatureLayerConfig {
         return mSharedPreferences.getString(KEY_FONT, null);
     }
 
-    public String getRingtone() {
-        return mSharedPreferences.getString(KEY_RINGTONE, null);
+    public String getAlertSound() {
+        return mSharedPreferences.getString(KEY_ALERT_SOUND, Settings.System.DEFAULT_NOTIFICATION_URI.toString());
     }
 
     public int getTemperatureThreshold() {
@@ -153,7 +155,7 @@ public final class TemperatureLayerConfig {
         return currentUnit.equals(celsiusUnit);
     }
 
-	public Context getContext() {
-		return mContext;
-	}
+    public Context getContext() {
+        return mContext;
+    }
 }

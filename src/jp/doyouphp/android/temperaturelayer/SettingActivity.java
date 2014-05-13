@@ -49,10 +49,12 @@ public class SettingActivity extends PreferenceActivity {
             TemperatureLayerConfig.KEY_FONT,
             TemperatureLayerConfig.KEY_COLOR,
             TemperatureLayerConfig.KEY_ALERT,
-            TemperatureLayerConfig.KEY_RING,
-            TemperatureLayerConfig.KEY_RINGTONE,
+            TemperatureLayerConfig.KEY_TEMPERATURE_THRESHOLD,
+            TemperatureLayerConfig.KEY_SOUND,
+            TemperatureLayerConfig.KEY_ALERT_SOUND,
             TemperatureLayerConfig.KEY_VIBRATION };
     private Map<String, String> mLayouts = new HashMap<String, String>();
+    private Map<String, String> mTemperatureThresholds = new HashMap<String, String>();
 
     @SuppressWarnings("deprecation")
     @Override
@@ -60,31 +62,23 @@ public class SettingActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref);
 
-        String[] entries = getResources()
+        String[] layout_entries = getResources()
                 .getStringArray(R.array.entries_layout);
-        String[] values = getResources().getStringArray(R.array.values_layout);
-        for (int i = 0; i < entries.length; i++) {
-            mLayouts.put(values[i], entries[i]);
+        String[] layout_values = getResources().getStringArray(R.array.values_layout);
+        for (int i = 0; i < layout_entries.length; i++) {
+            mLayouts.put(layout_values[i], layout_entries[i]);
         }
-
-                
-/*
-        List<String> threshold_entries = new ArrayList<String>();
-        List<String> threshold_values = new ArrayList<String>();
-        TemperatureLayerConfig config = new TemperatureLayerConfig(this);
-        for (int i = getResources().getInteger(R.integer.min_temperature_threshold);
-        		i <= getResources().getInteger(R.integer.max_temperature_threshold); i++) {
-            threshold_entries.add(TemperatureLayerService.getTemperatureAsString(config, i * 10));
-            threshold_values.add(Integer.toString(i));
+        String[] threshold_entries = getResources()
+                .getStringArray(R.array.entries_temperature_threshold);
+        String[] threshold_values = getResources()
+        		.getStringArray(R.array.values_temperature_threshold);
+        for (int i = 0; i < threshold_entries.length; i++) {
+            mTemperatureThresholds.put(threshold_values[i], threshold_entries[i]);
         }
-//        IntegerListPreference threshold = (IntegerListPreference)findPreference("key_temperature_threshold");
-//        threshold.setEntries((String[])threshold_entries.toArray(new String[0]));
-//        threshold.setEntryValues((String[])threshold_values.toArray(new String[0]));
-*/
         for (String key : PREFERENCE_KEYS) {
             setPreferenceSummary(key);
         }
-        RingtonePreference pref = (RingtonePreference)findPreference("key_ringtone");
+        RingtonePreference pref = (RingtonePreference)findPreference("key_alert_sound");
         pref.setOnPreferenceChangeListener(mPreferenceChangeListener);
     }
 
@@ -168,15 +162,16 @@ public class SettingActivity extends PreferenceActivity {
             preference
                     .setSummary(config.isAlert() ? getString(R.string.alert_yes)
                             : getString(R.string.alert_no));
-        } else if (key.equals(TemperatureLayerConfig.KEY_RING)) {
+        } else if (key.equals(TemperatureLayerConfig.KEY_TEMPERATURE_THRESHOLD)) {
+            preference.setSummary(mTemperatureThresholds.get(Integer.toString(config
+                    .getTemperatureThreshold())));
+        } else if (key.equals(TemperatureLayerConfig.KEY_SOUND)) {
             preference
-                    .setSummary(config.withRing() ? getString(R.string.ring_yes)
-                            : getString(R.string.ring_no));
-        } else if (key.equals(TemperatureLayerConfig.KEY_RINGTONE)) {
-            if (config.getRingtone() != null) {
-                Ringtone ringtone = RingtoneManager.getRingtone(this, Uri.parse(config.getRingtone()));
-                preference.setSummary(ringtone.getTitle(this));
-            }
+                    .setSummary(config.withSound() ? getString(R.string.sound_yes)
+                            : getString(R.string.sound_no));
+        } else if (key.equals(TemperatureLayerConfig.KEY_ALERT_SOUND)) {
+            Ringtone ringtone = RingtoneManager.getRingtone(this, Uri.parse(config.getAlertSound()));
+            preference.setSummary(ringtone.getTitle(this));
         } else if (key.equals(TemperatureLayerConfig.KEY_VIBRATION)) {
             preference
                     .setSummary(config.isAlert() ? getString(R.string.vibration_yes)

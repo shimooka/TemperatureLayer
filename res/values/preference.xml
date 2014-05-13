@@ -273,13 +273,13 @@
     <string name="label_alert">High temperature alert</string>
     <string name="alert_yes">High temperature alert is enabled</string>
     <string name="alert_no">High temperature alert is disabled</string>
-    <string name="label_ring">With ringtone</string>
-    <string name="ring_yes">alert with ringtone</string>
-    <string name="ring_no">alert without ringtone</string>
-    <string name="label_ringtone">Ringtone</string>
+    <string name="label_sound">With sound</string>
+    <string name="sound_yes">Alert with sound</string>
+    <string name="sound_no">Alert WITHOUT sound</string>
+    <string name="label_alert_sound">Alert sound</string>
     <string name="label_vibration">With vibration</string>
-    <string name="vibration_yes">alert with vibration</string>
-    <string name="vibration_no">alert without vibration</string>
+    <string name="vibration_yes">Alert with vibration</string>
+    <string name="vibration_no">Alert WITHOUT vibration</string>
 
     <string name="preference_header_temperature_threshold">Temperature threshold</string>
     <string name="label_temperature_threshold">Temperature threshold</string>
