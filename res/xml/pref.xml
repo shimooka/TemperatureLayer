@@ -41,6 +41,7 @@
           android:entryValues="@array/values_temperature_unit"
           android:defaultValue="@string/default_temperature_unit" />
 
+<!--
       <com.google.android.apps.mytracks.IntegerListPreference
           android:id="@+id/view_layout"
           android:key="key_layout"
@@ -49,6 +50,11 @@
           android:entries="@array/entries_layout"
           android:entryValues="@array/values_layout"
           android:defaultValue="@integer/default_layout" />
+-->
+      <Preference
+          android:id="@+id/view_position"
+          android:key="key_position"
+          android:title="@string/label_position" />
 
       <com.ulduzsoft.preferences.FontPreference
           android:id="@+id/view_font"
@@ -146,4 +152,5 @@
           android:dependency="key_alert"/>
 
   </PreferenceCategory>
+
 </PreferenceScreen>

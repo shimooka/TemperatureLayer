@@ -40,105 +40,121 @@ import android.widget.Button;
  * the main Activity class of TemperatureLayer
  */
 public class TemperatureLayerActivity extends Activity {
-	public static final String TAG = "TemperatureLayer";
+    public static final String TAG = "TemperatureLayer";
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		String versionName = "0.0.0";
-		PackageManager packageManager = getPackageManager();
-		try {
-			versionName = packageManager.getPackageInfo(getPackageName(),
-					PackageManager.GET_ACTIVITIES).versionName;
-		} catch (NameNotFoundException e) {
-			Log.w(TAG, "failed to get versionName");
-		}
-		setTitle(getString(R.string.app_name) + " ver." + versionName);
+        String versionName = "0.0.0";
+        PackageManager packageManager = getPackageManager();
+        try {
+            versionName = packageManager.getPackageInfo(getPackageName(),
+                    PackageManager.GET_ACTIVITIES).versionName;
+        } catch (NameNotFoundException e) {
+            Log.w(TAG, "failed to get versionName");
+        }
+        setTitle(getString(R.string.app_name) + " ver." + versionName);
 
-		setContentView(R.layout.activity_temperature_layer);
+        setContentView(R.layout.activity_temperature_layer);
 
-		Button btn = (Button) findViewById(R.id.StartButton);
-		btn.setOnClickListener(btnListener);
-		btn = (Button) findViewById(R.id.StopButton);
-		btn.setOnClickListener(btnListener);
-	}
+        Button btn = (Button) findViewById(R.id.StartButton);
+        btn.setOnClickListener(btnListener);
+        btn = (Button) findViewById(R.id.StopButton);
+        btn.setOnClickListener(btnListener);
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.temperature_layer, menu);
-		return true;
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.temperature_layer, menu);
+        return true;
+    }
 
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_settings:
-			Intent intent = new Intent();
-			intent.setClassName(this.getPackageName(),
-					SettingActivity.class.getName());
-			startActivity(intent);
-			return true;
-		}
-		return false;
-	}
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.action_settings:
+            Intent intent = new Intent();
+            intent.setClassName(this.getPackageName(),
+                    SettingActivity.class.getName());
+            startActivity(intent);
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		flipButton();
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        flipButton();
+    }
 
-	private OnClickListener btnListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.StartButton:
-				startService(new Intent(TemperatureLayerActivity.this,
-						TemperatureLayerService.class));
-				break;
-			case R.id.StopButton:
-				stopService(new Intent(TemperatureLayerActivity.this,
-						TemperatureLayerService.class));
-				break;
-			default:
-				return;
-			}
-			flipButton();
-		}
-	};
+    private OnClickListener btnListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+            case R.id.StartButton:
+                startService(new Intent(TemperatureLayerActivity.this,
+                        TemperatureLayerService.class));
+                break;
+            case R.id.StopButton:
+                stopService(new Intent(TemperatureLayerActivity.this,
+                        TemperatureLayerService.class));
+                break;
+            default:
+                return;
+            }
+            flipButton();
+        }
+    };
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-	}
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
-	private void flipButton() {
-		boolean running = isServiceRunning(this);
-		Button btn = (Button) findViewById(R.id.StartButton);
-		btn.setEnabled(!running);
-		btn = (Button) findViewById(R.id.StopButton);
-		btn.setEnabled(running);
-	}
+    private void flipButton() {
+        boolean running = isServiceRunning(this);
+        Button btn = (Button) findViewById(R.id.StartButton);
+        btn.setEnabled(!running);
+        btn = (Button) findViewById(R.id.StopButton);
+        btn.setEnabled(running);
+    }
 
-	/**
-	 * Returns if TemperatureLayer service is running or not
-	 * 
-	 * @param Context context Context object
-	 * @return boolean true if service is running or false
-	 */
-	public static boolean isServiceRunning(Context context) {
-		ActivityManager activityManager = (ActivityManager) context
-				.getSystemService(Context.ACTIVITY_SERVICE);
-		List<RunningServiceInfo> services = activityManager
-				.getRunningServices(Integer.MAX_VALUE);
-		final String mServiceName = TemperatureLayerService.class
-				.getCanonicalName();
+    /**
+     * Returns if TemperatureLayer service is running or not
+     *
+     * @param Context context Context object
+     * @return boolean true if service is running or false
+     */
+    public static boolean isServiceRunning(Context context) {
+        ActivityManager activityManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<RunningServiceInfo> services = activityManager
+                .getRunningServices(Integer.MAX_VALUE);
+        final String mServiceName = TemperatureLayerService.class
+                .getCanonicalName();
 
-		for (RunningServiceInfo info : services) {
-			if (mServiceName.equals(info.service.getClassName())) {
-				return true;
-			}
-		}
-		return false;
-	}
+        for (RunningServiceInfo info : services) {
+            if (mServiceName.equals(info.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static RunningServiceInfo getRunningService(Context context) {
+        ActivityManager activityManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<RunningServiceInfo> services = activityManager
+                .getRunningServices(Integer.MAX_VALUE);
+        final String mServiceName = TemperatureLayerService.class
+                .getCanonicalName();
+
+        for (RunningServiceInfo info : services) {
+            if (mServiceName.equals(info.service.getClassName())) {
+                return info;
+            }
+        }
+        return null;
+    }
 }

@@ -18,6 +18,7 @@
     <!-- common -->
     <string name="app_name" translatable="false">Temperature Layer</string>
     <string name="title_settings">Settings</string>
+    <string name="title_about">About</string>
 
     <!-- widget -->
     <string name="start_service">Start Service</string>

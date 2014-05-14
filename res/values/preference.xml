@@ -35,11 +35,13 @@
     <string name="label_layout">Layout</string>
     <string name="dialogtitle_layout">Select layout</string>
 
+    <string name="label_position">Layout</string>
+
     <string name="label_text_size">Text size</string>
     <string name="dialogtitle_text_size">Select text size</string>
 
     <string name="label_color">Text color</string>
-    <string name="dialog_color_picker">Select text color</string>
+    <string name="dialog_color_picker">Select color</string>
     <string name="press_color_to_apply">Press on color to apply</string>
 
     <string name="label_font">Text font</string>
@@ -312,5 +314,7 @@
         <item >900</item>
     </string-array>
 
+    <integer name="default_x">0</integer>
+    <integer name="default_y">0</integer>
 
 </resources>

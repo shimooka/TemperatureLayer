@@ -16,8 +16,8 @@
  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.doyouphp.android.temperaturelayer"
-    android:versionCode="10220140513"
-    android:versionName="1.0.2" >
+    android:versionCode="10320140514"
+    android:versionName="1.0.3" >
 
     <uses-sdk
         android:minSdkVersion="5"
@@ -55,7 +55,7 @@
         </receiver>
 
         <service android:name=".service.TemperatureLayerService" />
-        <activity android:name="SettingActivity"></activity>
+        <activity android:name="SettingActivity" android:exported="true"></activity>
     </application>
 
 </manifest>

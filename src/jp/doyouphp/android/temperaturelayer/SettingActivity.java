@@ -24,6 +24,11 @@ import com.ulduzsoft.font.FontManager;
 import jp.doyouphp.android.temperaturelayer.config.TemperatureLayerConfig;
 import jp.doyouphp.android.temperaturelayer.service.TemperatureLayerService;
 
+import android.app.ActivityManager.RunningServiceInfo;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Ringtone;
@@ -32,9 +37,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.view.WindowManager;
 
 /**
  * an Activity class for setting screen
@@ -56,6 +63,8 @@ public class SettingActivity extends PreferenceActivity {
     private Map<String, String> mLayouts = new HashMap<String, String>();
     private Map<String, String> mTemperatureThresholds = new HashMap<String, String>();
 
+    private static final String KEY_RESTART_SERVICE = "RESTART_SERVICE";
+
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,15 +80,46 @@ public class SettingActivity extends PreferenceActivity {
         String[] threshold_entries = getResources()
                 .getStringArray(R.array.entries_temperature_threshold);
         String[] threshold_values = getResources()
-        		.getStringArray(R.array.values_temperature_threshold);
+                .getStringArray(R.array.values_temperature_threshold);
         for (int i = 0; i < threshold_entries.length; i++) {
             mTemperatureThresholds.put(threshold_values[i], threshold_entries[i]);
         }
         for (String key : PREFERENCE_KEYS) {
             setPreferenceSummary(key);
         }
-        RingtonePreference pref = (RingtonePreference)findPreference("key_alert_sound");
-        pref.setOnPreferenceChangeListener(mPreferenceChangeListener);
+        RingtonePreference alert_sound_pref = (RingtonePreference)findPreference("key_alert_sound");
+        alert_sound_pref.setOnPreferenceChangeListener(mPreferenceChangeListener);
+
+        Preference position_pref = (Preference)findPreference("key_position");
+        position_pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference arg0) {
+                NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification notification = new Notification();
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                intent.putExtra(KEY_RESTART_SERVICE, true);
+                PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+                notification.icon = R.drawable.ic_stat_name;
+                notification.tickerText = "edit mode";
+                notification.setLatestEventInfo(getApplicationContext(), "Temperature Layer", "Touch if fixed layout", pi);
+
+                notificationManager.notify(TemperatureLayerService.EDIT_MODE_NOTIFICATION_ID, notification);
+
+                restartServiceIfRunning(true);
+
+                return false;
+            }
+        });
+        
+        Intent intent = getIntent();
+        if (intent != null && intent.getExtras() != null) {
+        	if (intent.getExtras().getBoolean(KEY_RESTART_SERVICE)) {
+                NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(TemperatureLayerService.EDIT_MODE_NOTIFICATION_ID);
+                
+        		restartServiceIfRunning();
+        	}
+        }
     }
 
     @Override
@@ -182,10 +222,15 @@ public class SettingActivity extends PreferenceActivity {
     }
 
     private void restartServiceIfRunning() {
+        restartServiceIfRunning(false);
+    }
+    private void restartServiceIfRunning(boolean editMode) {
+        Intent intent = new Intent(this, TemperatureLayerService.class);
         if (TemperatureLayerActivity.isServiceRunning(this)) {
-            stopService(new Intent(this, TemperatureLayerService.class));
-            startService(new Intent(this, TemperatureLayerService.class));
+            stopService(intent);
         }
+        intent.putExtra(TemperatureLayerService.KEY_EDIT_MODE, editMode);
+        startService(intent);
     }
 
     public void resetSetting() {

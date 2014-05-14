@@ -37,9 +37,12 @@ public final class TemperatureLayerConfig {
     public static final String KEY_FONT = "key_font";
     public static final String KEY_ALERT = "key_alert";
     public static final String KEY_SOUND = "key_sound";
-	public static final String KEY_ALERT_SOUND = "key_alert_sound";
+    public static final String KEY_ALERT_SOUND = "key_alert_sound";
     public static final String KEY_VIBRATION = "key_vibration";
     public static final String KEY_TEMPERATURE_THRESHOLD = "key_temperature_threshold";
+
+    public static final String KEY_X = "key_x";
+    public static final String KEY_Y = "key_y";
 
     private static final String KEY_INITIALIZED = "key_initialized";
 
@@ -157,5 +160,23 @@ public final class TemperatureLayerConfig {
 
     public Context getContext() {
         return mContext;
+    }
+
+    public void setX(int x) {
+        mSharedPreferences.edit().putInt(KEY_X, x).commit();
+    }
+
+    public void setY(int y) {
+        mSharedPreferences.edit().putInt(KEY_Y, y).commit();
+    }
+
+    public int getX() {
+        return mSharedPreferences.getInt(KEY_X, mContext.getResources()
+                .getInteger(R.integer.default_x));
+    }
+
+    public int getY() {
+        return mSharedPreferences.getInt(KEY_Y, mContext.getResources()
+                .getInteger(R.integer.default_y));
     }
 }

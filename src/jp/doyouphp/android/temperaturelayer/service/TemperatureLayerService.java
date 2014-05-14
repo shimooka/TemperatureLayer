@@ -20,6 +20,7 @@ import jp.doyouphp.android.temperaturelayer.R;
 import jp.doyouphp.android.temperaturelayer.TemperatureLayerActivity;
 import jp.doyouphp.android.temperaturelayer.config.TemperatureLayerConfig;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -34,11 +35,16 @@ import android.graphics.Typeface;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -52,8 +58,15 @@ import android.widget.TextView;
 public class TemperatureLayerService extends Service {
     View mView;
     WindowManager mWindowManager;
+    WindowManager.LayoutParams params;
     TemperatureLayerConfig mConfig;
     public static boolean isTest = false;
+
+    public static final String KEY_EDIT_MODE = "EDIT_MODE";
+    public static final int NORMAL_NOTIFICATION_ID = 1;
+    public static final int EDIT_MODE_NOTIFICATION_ID = 2;
+
+    protected boolean currentEditMode = false;
 
     @Override
     public void onCreate() {
@@ -61,14 +74,100 @@ public class TemperatureLayerService extends Service {
         mConfig = new TemperatureLayerConfig(getApplicationContext());
     }
 
+    final OnTouchListener moving = new View.OnTouchListener() {
+        boolean touchconsumedbyMove = false;
+        int recButtonLastX;
+        int recButtonLastY;
+        int recButtonFirstX;
+        int recButtonFirstY;
+        @TargetApi(Build.VERSION_CODES.FROYO)
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            WindowManager.LayoutParams params = getLayoutParams(true);
+
+            int totalDeltaX = recButtonLastX - recButtonFirstX;
+            int totalDeltaY = recButtonLastY - recButtonFirstY;
+
+             switch(event.getActionMasked())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        recButtonLastX = (int) event.getRawX();
+                        recButtonLastY = (int) event.getRawY();
+                        recButtonFirstX = recButtonLastX;
+                        recButtonFirstY = recButtonLastY;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        int deltaX = (int) event.getRawX() - recButtonLastX;
+                        int deltaY = (int) event.getRawY() - recButtonLastY;
+                        recButtonLastX = (int) event.getRawX();
+                        recButtonLastY = (int) event.getRawY();
+                        if (Math.abs(totalDeltaX) >= 2  || Math.abs(totalDeltaY) >= 2) {
+                            if (event.getPointerCount() == 1) {
+                                params.x += deltaX;
+                                params.y += deltaY;
+                                mConfig.setX(params.x);
+                                mConfig.setY(params.y);
+                                Log.d(TemperatureLayerActivity.TAG, "deltaX="+deltaX+" deltaY="+deltaY+" x="+params.x+" y="+params.y);
+                                touchconsumedbyMove = true;
+                                mWindowManager.updateViewLayout(v, params);
+                            } else {
+                                touchconsumedbyMove = false;
+                            }
+                        } else {
+                            touchconsumedbyMove = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return touchconsumedbyMove;
+        }
+    };
+
+    protected WindowManager.LayoutParams getLayoutParams() {
+        return getLayoutParams(false);
+    }
+
+    protected WindowManager.LayoutParams getLayoutParams(boolean editMode) {
+        if (currentEditMode != editMode) {
+            currentEditMode = editMode;
+            if (mWindowManager != null && mView != null) {
+                mWindowManager.removeView(mView);
+            }
+        }
+        if (params == null) {
+            params = new WindowManager.LayoutParams();
+            params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            params.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+            params.x = mConfig.getX();
+            params.y = mConfig.getY();
+            params.format = PixelFormat.TRANSLUCENT;
+            params.gravity = Gravity.NO_GRAVITY;
+        }
+
+        if (editMode) {
+            params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        } else {
+            params.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+            params.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+
+        return params;
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (!isTest) {
             // require API Level 5
-            startForeground(1, new Notification());
+            startForeground(NORMAL_NOTIFICATION_ID, new Notification());
         }
 
         mView = LayoutInflater.from(this).inflate(R.layout.overlay, null);
+        mView.setOnTouchListener(moving);
         TextView text = (TextView) mView.findViewById(R.id.currentTemperature);
         text.setTextSize(mConfig.getTextSize());
         if (mConfig.getFontPath() != null) {
@@ -78,15 +177,12 @@ public class TemperatureLayerService extends Service {
         text.setTextColor(Color.argb(Color.alpha(color), Color.red(color),
                 Color.green(color), Color.blue(color)));
 
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-        params.gravity = mConfig.getLayout();
+        boolean editMode = false;
+        if (intent != null && intent.getExtras() != null) {
+            editMode = intent.getExtras().getBoolean(KEY_EDIT_MODE);
+        }
+        WindowManager.LayoutParams params = getLayoutParams(editMode);
+//        params.gravity = mConfig.getLayout();
 
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         mWindowManager.addView(mView, params);
@@ -150,7 +246,7 @@ public class TemperatureLayerService extends Service {
                     notification.tickerText = "Current battery temperature is " + temperatureString;
                     notification.setLatestEventInfo(getApplicationContext(), "Temperature Layer", temperatureString, pi);
 
-                    notificationManager.notify(1, notification);
+                    notificationManager.notify(NORMAL_NOTIFICATION_ID, notification);
                 }
 
                 if (temperature >= mConfig.getTemperatureThreshold()) {
@@ -204,5 +300,13 @@ public class TemperatureLayerService extends Service {
     public static double calculateTemperature(int temperature, boolean useCelsius) {
         return Math.floor(useCelsius ? temperature
                 : temperature * 9f / 5f + 320) / 10;
+    }
+
+    public int getLayoutX() {
+        return params.x;
+    }
+
+    public int getLayoutY() {
+        return params.y;
     }
 }
