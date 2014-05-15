@@ -26,4 +26,6 @@
     <!-- label -->
     <string name="label_start_stop">サービスの起動と停止</string>
 
+    <string name="notification_message">現在のバッテリー温度は%1$sです</string>
+
 </resources>

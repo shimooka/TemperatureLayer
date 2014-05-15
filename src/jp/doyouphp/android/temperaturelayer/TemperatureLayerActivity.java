@@ -54,7 +54,7 @@ public class TemperatureLayerActivity extends Activity {
         } catch (NameNotFoundException e) {
             Log.w(TAG, "failed to get versionName");
         }
-        setTitle(getString(R.string.app_name) + " ver." + versionName);
+        setTitle(getString(R.string.app_name));
 
         setContentView(R.layout.activity_temperature_layer);
 

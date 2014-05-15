@@ -31,4 +31,6 @@
     <string name="string_degree" translatable="false">%1$s°%2$s</string>
     <string name="initial_temperature" translatable="false">0.0</string>
 
+    <string name="notification_message">Current battery temperature is %1$s</string>
+
 </resources>

@@ -31,7 +31,6 @@ public final class TemperatureLayerConfig {
     public static final String KEY_START_ON_BOOT = "key_start_on_boot";
     public static final String KEY_NOTIFICATION = "key_notification";
     public static final String KEY_TEMPERATURE_UNIT = "key_temperature_unit";
-    public static final String KEY_LAYOUT = "key_layout";
     public static final String KEY_TEXT_SIZE = "key_text_size";
     public static final String KEY_COLOR = "key_color";
     public static final String KEY_FONT = "key_font";
@@ -76,9 +75,6 @@ public final class TemperatureLayerConfig {
                             KEY_TEMPERATURE_UNIT,
                             mContext.getResources().getString(
                                     R.string.default_temperature_unit))
-                    .putInt(KEY_LAYOUT,
-                            mContext.getResources().getInteger(
-                                    R.integer.default_layout))
                     .putInt(KEY_TEXT_SIZE,
                             mContext.getResources().getInteger(
                                     R.integer.default_text_size))
@@ -87,6 +83,10 @@ public final class TemperatureLayerConfig {
                                     R.color.default_color))
                     .putString(KEY_ALERT_SOUND, Settings.System.DEFAULT_NOTIFICATION_URI.toString())
                     .putBoolean(KEY_INITIALIZED, true).commit();
+
+            /**
+             * @todo layout情報があったらX/Yの初期値を入れる？
+             */
         }
     }
 
@@ -106,11 +106,6 @@ public final class TemperatureLayerConfig {
     public int getTextSize() {
         return mSharedPreferences.getInt(KEY_TEXT_SIZE, mContext.getResources()
                 .getInteger(R.integer.default_text_size));
-    }
-
-    public int getLayout() {
-        return mSharedPreferences.getInt(KEY_LAYOUT, mContext.getResources()
-                .getInteger(R.integer.default_layout));
     }
 
     public int getColor() {
@@ -148,7 +143,7 @@ public final class TemperatureLayerConfig {
 
     public int getTemperatureThreshold() {
         return mSharedPreferences.getInt(KEY_TEMPERATURE_THRESHOLD, mContext.getResources()
-                .getInteger(R.integer.default_layout));
+                .getInteger(R.integer.default_temperature_threshold));
     }
 
     public boolean useCelsius() {

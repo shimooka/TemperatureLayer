@@ -270,6 +270,7 @@
     <!-- 85 = right-bottom -->
     <integer name="default_layout">85</integer>
     <color name="default_color">#ffffffff</color>
+    <color name="edit_color">#ffff0000</color>
 
     <string name="preference_header_alert">Alert setting</string>
     <string name="label_alert">High temperature alert</string>
@@ -316,5 +317,8 @@
 
     <integer name="default_x">0</integer>
     <integer name="default_y">0</integer>
+
+    <string name="enter_edit_mode">SWIPE to move the field, and TWO-FINGER TOUCH to exit.</string>
+    <string name="exit_edit_mode">Exit edit mode.</string>
 
 </resources>
