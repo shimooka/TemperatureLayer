@@ -17,7 +17,7 @@
 <resources>
     <!-- common -->
     <string name="title_settings">設定</string>
-    <string name="title_about">このアプリについて</string>
+    <string name="title_about">Temperature Layerについて</string>
 
     <!-- widget -->
     <string name="start_service">サービスを起動する</string>

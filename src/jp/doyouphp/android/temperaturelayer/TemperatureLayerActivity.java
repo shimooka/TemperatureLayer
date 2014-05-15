@@ -25,18 +25,21 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * the main Activity class of TemperatureLayer
@@ -72,7 +75,8 @@ public class TemperatureLayerActivity extends Activity {
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @SuppressWarnings("deprecation")
+	public boolean onOptionsItemSelected(MenuItem item) {
         boolean result = false;
         switch (item.getItemId()) {
         case R.id.action_settings:
@@ -83,17 +87,7 @@ public class TemperatureLayerActivity extends Activity {
             result = true;
             break;
         case R.id.action_about:
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getString(R.string.title_about));
-            builder.setMessage(getString(R.string.app_name) + " ver." + mVersionName);
-            builder.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+            showDialog(0);
             result = true;
             break;
         }
@@ -175,5 +169,16 @@ public class TemperatureLayerActivity extends Activity {
             }
         }
         return null;
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View layout = inflater.inflate(R.layout.about_dialog, (ViewGroup)findViewById(R.id.dialog_root));
+        TextView text = ((TextView)layout.findViewById(R.id.app_name));
+        text.setText(getString(R.string.app_name) + " ver." + mVersionName);
+        builder.setView(layout);
+        return builder.create();
     }
 }
