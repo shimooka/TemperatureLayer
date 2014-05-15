@@ -1,5 +1,5 @@
 /**
- * Copyright 2013 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
+ * Copyright 2013,2014 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -45,6 +46,7 @@ public class SettingActivity extends PreferenceActivity {
     private static final String[] PREFERENCE_KEYS = {
             TemperatureLayerConfig.KEY_START_ON_BOOT,
             TemperatureLayerConfig.KEY_NOTIFICATION,
+            TemperatureLayerConfig.KEY_HIDE_ICON,
             TemperatureLayerConfig.KEY_TEMPERATURE_UNIT,
             TemperatureLayerConfig.KEY_TEXT_SIZE,
             TemperatureLayerConfig.KEY_FONT,
@@ -63,7 +65,7 @@ public class SettingActivity extends PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref);
+        buildPreferenceFromResource();
 
         String[] threshold_entries = getResources()
                 .getStringArray(R.array.entries_temperature_threshold);
@@ -88,6 +90,18 @@ public class SettingActivity extends PreferenceActivity {
             }
         });
     }
+
+	@SuppressWarnings("deprecation")
+	protected void buildPreferenceFromResource() {
+		addPreferencesFromResource(R.xml.pref_set_on_boot);
+        addPreferencesFromResource(R.xml.pref_display);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            addPreferencesFromResource(R.xml.pref_notification_icon);
+        } else {
+            addPreferencesFromResource(R.xml.pref_notification);
+        }
+        addPreferencesFromResource(R.xml.pref_alert);
+	}
 
     @Override
     protected void onResume() {
@@ -151,10 +165,15 @@ public class SettingActivity extends PreferenceActivity {
             preference
                     .setSummary(config.isStartOnBoot() ? getString(R.string.start_on_boot_yes)
                             : getString(R.string.start_on_boot_no));
+            requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_NOTIFICATION)) {
             preference
                     .setSummary(config.isNotify() ? getString(R.string.notification_yes)
                             : getString(R.string.notification_no));
+        } else if (key.equals(TemperatureLayerConfig.KEY_HIDE_ICON)) {
+            preference
+                    .setSummary(config.withIcon() ? getString(R.string.hide_icon_no)
+                            : getString(R.string.hide_icon_yes));
         } else if (key.equals(TemperatureLayerConfig.KEY_TEXT_SIZE)) {
             preference.setSummary(getString(R.string.size_unit,
                     config.getTextSize()));
@@ -169,20 +188,25 @@ public class SettingActivity extends PreferenceActivity {
             preference
                     .setSummary(config.isAlert() ? getString(R.string.alert_yes)
                             : getString(R.string.alert_no));
+            requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_TEMPERATURE_THRESHOLD)) {
             preference.setSummary(mTemperatureThresholds.get(Integer.toString(config
                     .getTemperatureThreshold())));
+            requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_SOUND)) {
             preference
                     .setSummary(config.withSound() ? getString(R.string.sound_yes)
                             : getString(R.string.sound_no));
+            requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_ALERT_SOUND)) {
             Ringtone ringtone = RingtoneManager.getRingtone(this, Uri.parse(config.getAlertSound()));
             preference.setSummary(ringtone.getTitle(this));
+            requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_VIBRATION)) {
             preference
                     .setSummary(config.isAlert() ? getString(R.string.vibration_yes)
                             : getString(R.string.vibration_no));
+            requireRestart = false;
         }
 
         if (requireRestart) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
- * Copyright 2013 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
+ * Copyright 2013,2014 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,11 @@
     <string name="enter_edit_mode">スワイプして表示位置を移動し、二本指タッチで終了します</string>
     <string name="exit_edit_mode">編集モードを終了しました</string>
 
-    <string name="notification_ticker">Temperature Layerを起動します</string>
+    <string name="notification_ticker"></string>
     <string name="notification_content">タッチするとアプリを開きます</string>
+
+    <string name="label_hide_icon">アイコンを隠す</string>
+    <string name="hide_icon_yes">ステータスバーにアイコンを表示しません</string>
+    <string name="hide_icon_no">ステータスバーにアイコンを表示します</string>
 
 </resources>

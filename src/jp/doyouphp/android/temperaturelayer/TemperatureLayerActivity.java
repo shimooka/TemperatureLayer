@@ -1,5 +1,5 @@
 /**
- * Copyright 2013 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
+ * Copyright 2013,2014 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -41,18 +43,18 @@ import android.widget.Button;
  */
 public class TemperatureLayerActivity extends Activity {
     public static final String TAG = "TemperatureLayer";
+    protected String mVersionName = "0.0.0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String versionName = "0.0.0";
         PackageManager packageManager = getPackageManager();
         try {
-            versionName = packageManager.getPackageInfo(getPackageName(),
+            mVersionName = packageManager.getPackageInfo(getPackageName(),
                     PackageManager.GET_ACTIVITIES).versionName;
         } catch (NameNotFoundException e) {
-            Log.w(TAG, "failed to get versionName");
+            Log.w(TAG, "failed to get mVersionName");
         }
         setTitle(getString(R.string.app_name));
 
@@ -71,15 +73,32 @@ public class TemperatureLayerActivity extends Activity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        boolean result = false;
         switch (item.getItemId()) {
         case R.id.action_settings:
             Intent intent = new Intent();
             intent.setClassName(this.getPackageName(),
                     SettingActivity.class.getName());
             startActivity(intent);
-            return true;
+            result = true;
+            break;
+        case R.id.action_about:
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.title_about));
+            builder.setMessage(getString(R.string.app_name) + " ver." + mVersionName);
+            builder.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            result = true;
+            break;
         }
-        return false;
+
+        return result;
     }
 
     @Override

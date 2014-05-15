@@ -1,5 +1,5 @@
 /**
- * Copyright 2013 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
+ * Copyright 2013,2014 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import android.provider.Settings;
 public final class TemperatureLayerConfig {
     public static final String KEY_START_ON_BOOT = "key_start_on_boot";
     public static final String KEY_NOTIFICATION = "key_notification";
+    public static final String KEY_HIDE_ICON = "key_hide_icon";
     public static final String KEY_TEMPERATURE_UNIT = "key_temperature_unit";
     public static final String KEY_TEXT_SIZE = "key_text_size";
     public static final String KEY_COLOR = "key_color";
@@ -174,4 +175,9 @@ public final class TemperatureLayerConfig {
         return mSharedPreferences.getInt(KEY_Y, mContext.getResources()
                 .getInteger(R.integer.default_y));
     }
+
+    public boolean withIcon() {
+        return !mSharedPreferences.getBoolean(KEY_HIDE_ICON, false);
+    }
+
 }

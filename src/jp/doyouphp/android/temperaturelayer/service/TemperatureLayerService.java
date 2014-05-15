@@ -1,5 +1,5 @@
 /**
- * Copyright 2013 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
+ * Copyright 2013,2014 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import jp.doyouphp.android.temperaturelayer.R;
 import jp.doyouphp.android.temperaturelayer.TemperatureLayerActivity;
 import jp.doyouphp.android.temperaturelayer.config.TemperatureLayerConfig;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -29,9 +30,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -167,17 +171,18 @@ public class TemperatureLayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+
         if (!isTest) {
-            Notification notification = buildNotification(
-                mConfig.getContext().getString(R.string.notification_ticker),
-                mConfig.getContext().getString(R.string.notification_content));
+            Notification notification = new Notification();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+	            notification = buildNotification(
+	                mConfig.getContext().getString(R.string.notification_ticker),
+	                mConfig.getContext().getString(R.string.notification_content));
+            }
 
             // require API Level 5
             startForeground(R.string.app_name, notification);
-
-            NotificationManager notificationManager =
-                    (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(R.string.app_name);
         }
 
         boolean editMode = false;
@@ -216,17 +221,34 @@ public class TemperatureLayerService extends Service {
         return START_STICKY;
     }
 
+    @SuppressLint("NewApi")
     @SuppressWarnings("deprecation")
     protected Notification buildNotification(String tickerText, String contentText) {
         Notification notification = new Notification();
-        Intent i = new Intent(mConfig.getContext(), TemperatureLayerActivity.class);
+        Intent intent = new Intent(mConfig.getContext(), TemperatureLayerActivity.class);
         notification.icon = R.drawable.ic_stat_name;
         notification.tickerText = tickerText;
+        notification.flags = Notification.FLAG_ONGOING_EVENT;
         notification.setLatestEventInfo(
             mConfig.getContext(),
             mConfig.getContext().getString(R.string.app_name),
             contentText,
-            PendingIntent.getActivity(mConfig.getContext(), 0, i, 0));
+            PendingIntent.getActivity(mConfig.getContext(), 0, intent, 0));
+
+        Drawable largeIconDrawable = getResources().getDrawable(R.drawable.ic_launcher);
+        Bitmap largeIconBitmap = ((BitmapDrawable)largeIconDrawable).getBitmap();
+
+        if (!mConfig.withIcon()) {
+            // API 11<=
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                notification.largeIcon = largeIconBitmap;
+            }
+            // API 16<=
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                notification.priority = Notification.PRIORITY_MIN;
+            }
+        }
+
         return notification;
     }
 
@@ -243,6 +265,8 @@ public class TemperatureLayerService extends Service {
         if (mWindowManager != null) {
             mWindowManager.removeView(mView);
         }
+
+        super.onDestroy();
 
         Log.v(TemperatureLayerActivity.TAG, "Service stopped");
     }

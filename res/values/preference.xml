@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
- * Copyright 2013 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
+ * Copyright 2013,2014 Hideyuki SHIMOOKA <shimooka@doyouphp.jp>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -302,7 +302,11 @@
     <string name="enter_edit_mode">SWIPE to move the field, and TWO-FINGER TOUCH to exit.</string>
     <string name="exit_edit_mode">Exit edit mode.</string>
 
-    <string name="notification_ticker">Start Temperature Layer</string>
+    <string name="notification_ticker"></string>
     <string name="notification_content">Touch to open application</string>
+
+    <string name="label_hide_icon">Hide application icon</string>
+    <string name="hide_icon_yes">App icon will NOT be shown on the status bar</string>
+    <string name="hide_icon_no">App icon will be shown on the status bar</string>
 
 </resources>
