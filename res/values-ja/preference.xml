@@ -32,9 +32,6 @@
     <string name="label_temperature_unit">温度の単位</string>
     <string name="dialogtitle_temperature_unit">温度の単位の選択</string>
 
-    <string name="label_layout">表示位置</string>
-    <string name="dialogtitle_layout">表示位置の選択</string>
-
     <string name="label_position">表示位置</string>
 
     <string name="label_text_size">テキストサイズ</string>
@@ -51,13 +48,6 @@
     <string-array name="entries_temperature_unit">
         <item >摂氏 (°C)</item>
         <item >華氏 (°F)</item>
-    </string-array>
-
-    <string-array name="entries_layout">
-        <item >左上</item>
-        <item >右上</item>
-        <item >左下</item>
-        <item >右下</item>
     </string-array>
 
     <string name="preference_header_alert">高温時のアラート</string>
@@ -78,5 +68,8 @@
 
     <string name="enter_edit_mode">スワイプして表示位置を移動し、二本指タッチで終了します</string>
     <string name="exit_edit_mode">編集モードを終了しました</string>
+
+    <string name="notification_ticker">Temperature Layerを起動します</string>
+    <string name="notification_content">タッチするとアプリを開きます</string>
 
 </resources>

@@ -32,10 +32,7 @@
     <string name="label_temperature_unit">Temperature unit</string>
     <string name="dialogtitle_temperature_unit">Select temperature unit</string>
 
-    <string name="label_layout">Layout</string>
-    <string name="dialogtitle_layout">Select layout</string>
-
-    <string name="label_position">Layout</string>
+    <string name="label_position">Position</string>
 
     <string name="label_text_size">Text size</string>
     <string name="dialogtitle_text_size">Select text size</string>
@@ -45,20 +42,6 @@
     <string name="press_color_to_apply">Press on color to apply</string>
 
     <string name="label_font">Text font</string>
-
-
-    <string-array name="entries_layout">
-        <item >Upper left</item>
-        <item >Upper Right</item>
-        <item >Bottom left</item>
-        <item >Bottom right</item>
-    </string-array>
-    <string-array name="values_layout" translatable="false">
-        <item >51</item>
-        <item >53</item>
-        <item >83</item>
-        <item >85</item>
-    </string-array>
 
     <string-array name="entries_temperature_unit">
         <item >Celsius (°C)</item>
@@ -267,8 +250,6 @@
 
     <string name="default_temperature_unit" translatable="false">C</string>
     <integer name="default_text_size">12</integer>
-    <!-- 85 = right-bottom -->
-    <integer name="default_layout">85</integer>
     <color name="default_color">#ffffffff</color>
     <color name="edit_color">#ffff0000</color>
 
@@ -320,5 +301,8 @@
 
     <string name="enter_edit_mode">SWIPE to move the field, and TWO-FINGER TOUCH to exit.</string>
     <string name="exit_edit_mode">Exit edit mode.</string>
+
+    <string name="notification_ticker">Start Temperature Layer</string>
+    <string name="notification_content">Touch to open application</string>
 
 </resources>

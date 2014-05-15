@@ -66,8 +66,6 @@ public class TemperatureLayerService extends Service {
     public static boolean isTest = false;
 
     public static final String KEY_EDIT_MODE = "EDIT_MODE";
-    public static final int NORMAL_NOTIFICATION_ID = 1;
-    public static final int EDIT_MODE_NOTIFICATION_ID = 2;
 
     protected static final int MOVE_DELTA = 1;
 
@@ -170,8 +168,16 @@ public class TemperatureLayerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (!isTest) {
+            Notification notification = buildNotification(
+                mConfig.getContext().getString(R.string.notification_ticker),
+                mConfig.getContext().getString(R.string.notification_content));
+
             // require API Level 5
-            startForeground(NORMAL_NOTIFICATION_ID, new Notification());
+            startForeground(R.string.app_name, notification);
+
+            NotificationManager notificationManager =
+                    (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(R.string.app_name);
         }
 
         boolean editMode = false;
@@ -210,6 +216,20 @@ public class TemperatureLayerService extends Service {
         return START_STICKY;
     }
 
+    @SuppressWarnings("deprecation")
+    protected Notification buildNotification(String tickerText, String contentText) {
+        Notification notification = new Notification();
+        Intent i = new Intent(mConfig.getContext(), TemperatureLayerActivity.class);
+        notification.icon = R.drawable.ic_stat_name;
+        notification.tickerText = tickerText;
+        notification.setLatestEventInfo(
+            mConfig.getContext(),
+            mConfig.getContext().getString(R.string.app_name),
+            contentText,
+            PendingIntent.getActivity(mConfig.getContext(), 0, i, 0));
+        return notification;
+    }
+
     @Override
     public void onDestroy() {
         try {
@@ -233,7 +253,6 @@ public class TemperatureLayerService extends Service {
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @SuppressWarnings("deprecation")
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Log.v(TemperatureLayerActivity.TAG, "action : " + action);
@@ -252,17 +271,11 @@ public class TemperatureLayerService extends Service {
                 if (mConfig.isNotify()) {
                     NotificationManager notificationManager =
                         (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-                    Notification notification = new Notification();
-                    Intent i = new Intent(mConfig.getContext(), TemperatureLayerActivity.class);
-                    notification.icon = R.drawable.ic_stat_name;
-                    notification.tickerText = mConfig.getContext().getString(R.string.notification_message, temperatureString);
-                    notification.setLatestEventInfo(
-                        mConfig.getContext(),
-                        mConfig.getContext().getString(R.string.app_name),
-                        temperatureString,
-                        PendingIntent.getActivity(mConfig.getContext(), 0, i, 0));
+                    Notification notification = buildNotification(
+                        mConfig.getContext().getString(R.string.notification_message, temperatureString),
+                        temperatureString);
 
-                    notificationManager.notify(NORMAL_NOTIFICATION_ID, notification);
+                    notificationManager.notify(R.string.app_name, notification);
                 }
 
                 if (temperature >= mConfig.getTemperatureThreshold()) {

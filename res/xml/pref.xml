@@ -41,16 +41,6 @@
           android:entryValues="@array/values_temperature_unit"
           android:defaultValue="@string/default_temperature_unit" />
 
-<!--
-      <com.google.android.apps.mytracks.IntegerListPreference
-          android:id="@+id/view_layout"
-          android:key="key_layout"
-          android:title="@string/label_layout"
-          android:dialogTitle="@string/dialogtitle_layout"
-          android:entries="@array/entries_layout"
-          android:entryValues="@array/values_layout"
-          android:defaultValue="@integer/default_layout" />
--->
       <Preference
           android:id="@+id/view_position"
           android:key="key_position"
