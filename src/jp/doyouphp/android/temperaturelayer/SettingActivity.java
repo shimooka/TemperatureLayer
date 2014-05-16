@@ -91,17 +91,17 @@ public class SettingActivity extends PreferenceActivity {
         });
     }
 
-	@SuppressWarnings("deprecation")
-	protected void buildPreferenceFromResource() {
-		addPreferencesFromResource(R.xml.pref_set_on_boot);
+    @SuppressWarnings("deprecation")
+    protected void buildPreferenceFromResource() {
+        addPreferencesFromResource(R.xml.pref_set_on_boot);
         addPreferencesFromResource(R.xml.pref_display);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             addPreferencesFromResource(R.xml.pref_notification_icon);
         } else {
             addPreferencesFromResource(R.xml.pref_notification);
         }
         addPreferencesFromResource(R.xml.pref_alert);
-	}
+    }
 
     @Override
     protected void onResume() {
