@@ -46,7 +46,7 @@ This application use following libraries. Thanks for author's great works !
 
 Releases
 --------
-- 2014/05/16 ver.1.0.3 - New display position, show/hide icon on the status bar, fixed bugs
+- 2014/05/16 ver.1.0.3 - New display position setting, show/hide icon on the status bar, fixed bugs
 - 2014/05/09 ver.1.0.2 - added high temperature alert
 - 2013/07/26 ver.1.0.1 - added font chooser and notification
 - 2013/06/26 ver.1.0.0 - first stable release
