@@ -1,22 +1,37 @@
 Temperature Layer
-=================
+==
 [Temperature Layer] is the simple Android application which displays battery temperature. The temperature will be displayed on the transparent layer, so it does not become obstructive.
 
 Temperature Layer is available at [Google Play].
 
+The source code (eclipse project format) is also available on [GitHub](https://github.com/shimooka/TemperatureLayer) under [Apache License, Version 2.0][Apache].
+
 Feature
--------
+--
 - Android2.0 or later
 - The battery temperature will be displayed on the transparent layer
 - Automatic start on boot
-- Switch temperature notification on status bar
+- Temperature notification
+- Show/Hide icon on the status bar (**Android 4.2+**)
 - Celsius (°C) or Fahrenheit (°F)
-- A display position is chosen from the four corners of a screen (on a status bar is possible)
+- Display temperature where you want (on a status bar is possible)
 - Choose your favorite font in device
 - Customize text size and text color with transparency
+- High temperature alert with notification sound and vibration
 - English and Japanese translation
-- High temperature alert with notification sound and vibration (ver.1.0.2)
 - ... and for FREE !
+
+About display position
+--
+
+- Touch 'Position' menu in settings, enter '**edit**' mode
+- In the edit mode, the temperature text color will be displayed in **red**
+- **Swipe** to move the temperature text
+- **Two-finger touch** to exit edit mode
+
+Limitation in edit mode
+--
+If swipe up and up, the temperature text will go under the status bar (and you will not see the text). This is NOT a bug. When you exit edit mode, the text will display collectly.
 
 Screen capture
 --------------
@@ -31,6 +46,7 @@ This application use following libraries. Thanks for author's great works !
 
 Releases
 --------
+- 2014/05/16 ver.1.0.3 - New display position, show/hide icon on the status bar, fixed bugs
 - 2014/05/09 ver.1.0.2 - added high temperature alert
 - 2013/07/26 ver.1.0.1 - added font chooser and notification
 - 2013/06/26 ver.1.0.0 - first stable release
