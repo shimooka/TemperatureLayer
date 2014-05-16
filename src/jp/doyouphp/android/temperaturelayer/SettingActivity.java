@@ -161,52 +161,48 @@ public class SettingActivity extends PreferenceActivity {
 
         TemperatureLayerConfig config = new TemperatureLayerConfig(this,
                 sharedPreferences);
+        String summary = null;
         if (key.equals(TemperatureLayerConfig.KEY_START_ON_BOOT)) {
-            preference
-                    .setSummary(config.isStartOnBoot() ? getString(R.string.start_on_boot_yes)
-                            : getString(R.string.start_on_boot_no));
+            summary = config.isStartOnBoot() ? getString(R.string.start_on_boot_yes)
+                            : getString(R.string.start_on_boot_no);
             requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_NOTIFICATION)) {
-            preference
-                    .setSummary(config.isNotify() ? getString(R.string.notification_yes)
-                            : getString(R.string.notification_no));
+            summary = config.isNotify() ? getString(R.string.notification_yes)
+                            : getString(R.string.notification_no);
         } else if (key.equals(TemperatureLayerConfig.KEY_HIDE_ICON)) {
-            preference
-                    .setSummary(config.withIcon() ? getString(R.string.hide_icon_no)
-                            : getString(R.string.hide_icon_yes));
+            summary = config.withIcon() ? getString(R.string.hide_icon_no)
+                            : getString(R.string.hide_icon_yes);
         } else if (key.equals(TemperatureLayerConfig.KEY_TEXT_SIZE)) {
-            preference.setSummary(getString(R.string.size_unit,
-                    config.getTextSize()));
+            summary = getString(R.string.size_unit, config.getTextSize());
         } else if (key.equals(TemperatureLayerConfig.KEY_TEMPERATURE_UNIT)) {
-            preference.setSummary(getString(R.string.string_degree, "",
-                    config.getTemperatureUnit()));
+            summary = getString(R.string.string_degree, "", config.getTemperatureUnit());
         } else if (key.equals(TemperatureLayerConfig.KEY_FONT)) {
             HashMap<String, String> fonts = FontManager.enumerateFonts();
             String fontName = fonts.get(config.getFontPath());
-            preference.setSummary(fontName != null ? fontName : "");
+            summary = fontName != null ? fontName : "";
         } else if (key.equals(TemperatureLayerConfig.KEY_ALERT)) {
-            preference
-                    .setSummary(config.isAlert() ? getString(R.string.alert_yes)
-                            : getString(R.string.alert_no));
+            summary = config.isAlert() ? getString(R.string.alert_yes)
+                            : getString(R.string.alert_no);
             requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_TEMPERATURE_THRESHOLD)) {
-            preference.setSummary(mTemperatureThresholds.get(Integer.toString(config
-                    .getTemperatureThreshold())));
+            summary = mTemperatureThresholds.get(Integer.toString(config.getTemperatureThreshold()));
             requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_SOUND)) {
-            preference
-                    .setSummary(config.withSound() ? getString(R.string.sound_yes)
-                            : getString(R.string.sound_no));
+            summary = config.withSound() ? getString(R.string.sound_yes)
+                            : getString(R.string.sound_no);
             requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_ALERT_SOUND)) {
             Ringtone ringtone = RingtoneManager.getRingtone(this, Uri.parse(config.getAlertSound()));
-            preference.setSummary(ringtone.getTitle(this));
+            summary = ringtone.getTitle(this);
             requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_VIBRATION)) {
-            preference
-                    .setSummary(config.isAlert() ? getString(R.string.vibration_yes)
-                            : getString(R.string.vibration_no));
+            summary = config.isAlert() ? getString(R.string.vibration_yes)
+                            : getString(R.string.vibration_no);
             requireRestart = false;
+        }
+
+        if (summary != null) {
+            preference.setSummary(summary);
         }
 
         if (requireRestart) {
