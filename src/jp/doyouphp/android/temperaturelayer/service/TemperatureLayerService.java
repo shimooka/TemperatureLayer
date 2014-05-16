@@ -288,6 +288,9 @@ public class TemperatureLayerService extends Service {
 
                 TextView currentTemperatureText =
                     (TextView)mView.findViewById(R.id.currentTemperature);
+                if (currentTemperatureText.getText().equals(temperatureString)) {
+                	return;
+                }
                 currentTemperatureText.setText(temperatureString);
                 Log.v(TemperatureLayerActivity.TAG, "current : "
                         + temperatureString);
