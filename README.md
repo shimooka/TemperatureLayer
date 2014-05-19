@@ -4,6 +4,8 @@ Temperature Layer
 
 Temperature Layer is available at [Google Play].
 
+Apk files is available at [here](https://www.dropbox.com/sh/0c8u8q45v6vs8es/AAAjNQ0GiQj1sJ3LEwUiV0SHa/TemperatureLayer). 
+
 The source code (eclipse project format) is also available on [GitHub](https://github.com/shimooka/TemperatureLayer) under [Apache License, Version 2.0][Apache].
 
 Feature

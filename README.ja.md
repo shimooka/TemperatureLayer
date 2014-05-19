@@ -5,6 +5,8 @@ Temperature Layer
 
 Temperature Layerは[Google Play]から入手できます。
 
+APKファイルは[こちら](https://www.dropbox.com/sh/0c8u8q45v6vs8es/AAAjNQ0GiQj1sJ3LEwUiV0SHa/TemperatureLayer)からダウンロードできます。
+
 また、ソースコード(eclipseプロジェクト形式)を[GitHub](https://github.com/shimooka/TemperatureLayer)で公開しています。ライセンスは[Apache License, Version 2.0][Apache]です。
 
 特徴
