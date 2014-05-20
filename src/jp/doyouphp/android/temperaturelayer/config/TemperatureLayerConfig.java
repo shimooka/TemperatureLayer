@@ -84,10 +84,6 @@ public final class TemperatureLayerConfig {
                                     R.color.default_color))
                     .putString(KEY_ALERT_SOUND, Settings.System.DEFAULT_NOTIFICATION_URI.toString())
                     .putBoolean(KEY_INITIALIZED, true).commit();
-
-            /**
-             * @todo layout情報があったらX/Yの初期値を入れる？
-             */
         }
     }
 

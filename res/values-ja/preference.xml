@@ -66,7 +66,7 @@
     <string name="label_temperature_threshold">閾値</string>
     <string name="dialogtitle_temperature_threshold">閾値の選択</string>
 
-    <string name="enter_edit_mode">スワイプして表示位置を移動し、二本指タッチで終了します</string>
+    <string name="enter_edit_mode">スワイプして表示位置を移動し、ダブルタップもしくは二本指タッチで終了します</string>
     <string name="exit_edit_mode">編集モードを終了しました</string>
 
     <string name="notification_ticker"></string>

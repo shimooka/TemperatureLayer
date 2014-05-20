@@ -299,7 +299,7 @@
     <integer name="default_x">0</integer>
     <integer name="default_y">0</integer>
 
-    <string name="enter_edit_mode">SWIPE to move the field, and TWO-FINGER TOUCH to exit.</string>
+    <string name="enter_edit_mode">SWIPE to move the field, and DOUBLE TAP or TWO-FINGER TOUCH to exit.</string>
     <string name="exit_edit_mode">Exit edit mode.</string>
 
     <string name="notification_ticker"></string>

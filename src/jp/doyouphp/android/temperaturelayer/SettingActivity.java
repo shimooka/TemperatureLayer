@@ -37,6 +37,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -74,7 +75,7 @@ public class SettingActivity extends PreferenceActivity {
         for (int i = 0; i < threshold_entries.length; i++) {
             mTemperatureThresholds.put(threshold_values[i], threshold_entries[i]);
         }
-        for (String key : PREFERENCE_KEYS) {
+        for (final String key : PREFERENCE_KEYS) {
             setupPreferenceSummary(key);
         }
         RingtonePreference alert_sound_pref = (RingtonePreference)findPreference("key_alert_sound");
@@ -153,9 +154,16 @@ public class SettingActivity extends PreferenceActivity {
 
     private void setPreferenceSummary(SharedPreferences sharedPreferences,
             String key, boolean requireRestart) {
+        if (key == null) {
+            Log.w(TemperatureLayerActivity.TAG, "key : " + key);
+            return;
+        }
         @SuppressWarnings("deprecation")
         Preference preference = findPreference(key);
         if (preference == null) {
+            /**
+             * no update summary item
+             */
             return;
         }
 
@@ -178,6 +186,10 @@ public class SettingActivity extends PreferenceActivity {
             summary = getString(R.string.string_degree, "", config.getTemperatureUnit());
         } else if (key.equals(TemperatureLayerConfig.KEY_FONT)) {
             HashMap<String, String> fonts = FontManager.enumerateFonts();
+            if (fonts == null) {
+                Log.w(TemperatureLayerActivity.TAG, "fonts : " + fonts);
+                return;
+            }
             String fontName = fonts.get(config.getFontPath());
             summary = fontName != null ? fontName : "";
         } else if (key.equals(TemperatureLayerConfig.KEY_ALERT)) {
@@ -193,6 +205,10 @@ public class SettingActivity extends PreferenceActivity {
             requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_ALERT_SOUND)) {
             Ringtone ringtone = RingtoneManager.getRingtone(this, Uri.parse(config.getAlertSound()));
+            if (ringtone == null) {
+                Log.w(TemperatureLayerActivity.TAG, "ringtone : " + ringtone);
+                return;
+            }
             summary = ringtone.getTitle(this);
             requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_VIBRATION)) {

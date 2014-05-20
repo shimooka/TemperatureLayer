@@ -62,21 +62,34 @@ import android.widget.Toast;
 public class TemperatureLayerService extends Service {
     View mView;
     WindowManager mWindowManager;
-    WindowManager.LayoutParams params;
+    WindowManager.LayoutParams mLayoutParams;
+    TextView mCurrentTemperatureText;
     TemperatureLayerConfig mConfig;
-
-    protected boolean currentEditMode = false;
 
     public static boolean isTest = false;
 
     public static final String KEY_EDIT_MODE = "EDIT_MODE";
 
-    protected static final int MOVE_DELTA = 1;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         mConfig = new TemperatureLayerConfig(getApplicationContext());
+
+        mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+        mView = LayoutInflater.from(this).inflate(R.layout.overlay, null);
+        mView.setOnTouchListener(movingListener);
+
+        mCurrentTemperatureText = (TextView)mView.findViewById(R.id.currentTemperature);
+        mCurrentTemperatureText.setTextSize(mConfig.getTextSize());
+        if (mConfig.getFontPath() != null) {
+            mCurrentTemperatureText.setTypeface(Typeface.createFromFile(mConfig.getFontPath()));
+        }
+        int color = mConfig.getColor();
+        mCurrentTemperatureText.setTextColor(Color.argb(Color.alpha(color), Color.red(color),
+                Color.green(color), Color.blue(color)));
+
     }
 
     final OnTouchListener movingListener = new View.OnTouchListener() {
@@ -84,12 +97,20 @@ public class TemperatureLayerService extends Service {
         int currentY;
         int previousX;
         int previousY;
+
+        int clickCount = 0;
+        long startTime;
+        long duration;
+        static final int MAX_DURATION = 750;
+        static final int REQUIRED_TAP_COUNT = 2;
+	    static final int MOVE_DELTA = 2;
+
         @SuppressWarnings("deprecation")
         @TargetApi(Build.VERSION_CODES.FROYO)
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             boolean consumed = false;
-            WindowManager.LayoutParams params = getLayoutParams(true);
+            WindowManager.LayoutParams mLayoutParams = getLayoutParams(true);
 
             switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
@@ -97,34 +118,50 @@ public class TemperatureLayerService extends Service {
                 currentY = (int)event.getRawY();
                 previousX = currentX;
                 previousY = currentY;
+
+                startTime = System.currentTimeMillis();
+                clickCount++;
+
                 consumed = true;
                 break;
+            case MotionEvent.ACTION_UP:
+                duration=  duration + System.currentTimeMillis() - startTime;
+                if (clickCount >= REQUIRED_TAP_COUNT) {     // double tap
+                    if (duration <= MAX_DURATION) {
+                        exitEditMode();
+                    }
+                    clickCount = 0;
+                    duration = 0;
+                    consumed = true;
+                }
+                break;
             case MotionEvent.ACTION_MOVE:
-                int deltaX = (int)event.getRawX() - currentX;
-                int deltaY = (int)event.getRawY() - currentY;
+                int dX = (int)event.getRawX() - currentX;
+                int dY = (int)event.getRawY() - currentY;
                 currentX = (int)event.getRawX();
                 currentY = (int)event.getRawY();
                 if ((Math.abs(currentX - previousX) >= MOVE_DELTA || Math.abs(currentY - previousY) >= MOVE_DELTA) &&
                     event.getPointerCount() == 1) {
-                        params.x += deltaX;
-                        params.y += deltaY;
-                        Log.d(TemperatureLayerActivity.TAG, "deltaX="+deltaX+" deltaY="+deltaY+" x="+params.x+" y="+params.y);
+                        mLayoutParams.x += dX;
+                        mLayoutParams.y += dY;
+                        Log.v(TemperatureLayerActivity.TAG,
+                            String.format("dX:%d dY:%d x:%d y:%d", dX, dY, mLayoutParams.x, mLayoutParams.y));
 
-                        mConfig.setX(params.x);
-                        mConfig.setY(params.y);
+                        mConfig.setX(mLayoutParams.x);
+                        mConfig.setY(mLayoutParams.y);
 
-                        mWindowManager.updateViewLayout(v, params);
+                        try {
+                            mWindowManager.updateViewLayout(v, mLayoutParams);
+                        } catch (IllegalArgumentException e) {
+                            Log.w(TemperatureLayerActivity.TAG, e.getMessage());
+                            mWindowManager.addView(v, mLayoutParams);
+                        }
                         consumed = true;
                 }
                 break;
             case MotionEvent.ACTION_POINTER_1_UP:       // ACTION_POINTER_UP
-                if (event.getPointerCount() == 2) {
-                    Intent intent = new Intent(mConfig.getContext(), TemperatureLayerService.class);
-                    if (TemperatureLayerActivity.isServiceRunning(mConfig.getContext())) {
-                        stopService(intent);
-                        startService(intent);
-                        Toast.makeText(mConfig.getContext(), R.string.exit_edit_mode, Toast.LENGTH_SHORT).show();
-                    }
+                if (event.getPointerCount() == 2) {     // two-finger touch
+                    exitEditMode();
                     consumed = true;
                 }
                 break;
@@ -136,37 +173,40 @@ public class TemperatureLayerService extends Service {
         }
     };
 
+    private void exitEditMode() {
+        Intent intent = new Intent(mConfig.getContext(), TemperatureLayerService.class);
+        if (TemperatureLayerActivity.isServiceRunning(mConfig.getContext())) {
+            stopService(intent);
+        }
+        startService(intent);
+        Toast.makeText(mConfig.getContext(), R.string.exit_edit_mode, Toast.LENGTH_SHORT).show();
+    }
+
     protected WindowManager.LayoutParams getLayoutParams() {
         return getLayoutParams(false);
     }
 
     protected WindowManager.LayoutParams getLayoutParams(boolean editMode) {
-        if (currentEditMode != editMode) {
-            currentEditMode = editMode;
-            if (mWindowManager != null && mView != null) {
-                mWindowManager.removeView(mView);
-            }
-        }
-        if (params == null) {
-            params = new WindowManager.LayoutParams();
-            params.width = WindowManager.LayoutParams.WRAP_CONTENT;
-            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            params.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
-            params.x = mConfig.getX();
-            params.y = mConfig.getY();
-            params.format = PixelFormat.TRANSLUCENT;
-            params.gravity = Gravity.NO_GRAVITY;
+        if (mLayoutParams == null) {
+            mLayoutParams = new WindowManager.LayoutParams();
+            mLayoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+            mLayoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            mLayoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+            mLayoutParams.x = mConfig.getX();
+            mLayoutParams.y = mConfig.getY();
+            mLayoutParams.format = PixelFormat.TRANSLUCENT;
+            mLayoutParams.gravity = Gravity.NO_GRAVITY;
         }
 
         if (editMode) {
-            params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+            mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         } else {
-            params.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
-            params.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+            mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+            mLayoutParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         }
 
-        return params;
+        return mLayoutParams;
     }
 
     @Override
@@ -176,9 +216,9 @@ public class TemperatureLayerService extends Service {
         if (!isTest) {
             Notification notification = new Notification();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-	            notification = buildNotification(
-	                mConfig.getContext().getString(R.string.notification_ticker),
-	                mConfig.getContext().getString(R.string.notification_content));
+                notification = buildNotification(
+                    mConfig.getContext().getString(R.string.notification_ticker),
+                    mConfig.getContext().getString(R.string.notification_content));
             }
 
             // require API Level 5
@@ -190,31 +230,21 @@ public class TemperatureLayerService extends Service {
             editMode = intent.getExtras().getBoolean(KEY_EDIT_MODE);
         }
 
-        mView = LayoutInflater.from(this).inflate(R.layout.overlay, null);
-        mView.setOnTouchListener(movingListener);
-        TextView currentTemperatureText = (TextView)mView.findViewById(R.id.currentTemperature);
-        currentTemperatureText.setTextSize(mConfig.getTextSize());
-        if (mConfig.getFontPath() != null) {
-            currentTemperatureText.setTypeface(Typeface.createFromFile(mConfig.getFontPath()));
-        }
-        int color = mConfig.getColor();
         if (editMode) {
             int edit_color = mConfig.getContext().getResources().getInteger(R.color.edit_color);
-            color = Color.argb(Color.alpha(edit_color), Color.red(edit_color),
+            int color = Color.argb(Color.alpha(edit_color), Color.red(edit_color),
                 Color.green(edit_color), Color.blue(edit_color));
+            mCurrentTemperatureText.setTextColor(Color.argb(Color.alpha(color), Color.red(color),
+                    Color.green(color), Color.blue(color)));
         }
-        currentTemperatureText.setTextColor(Color.argb(Color.alpha(color), Color.red(color),
-                Color.green(color), Color.blue(color)));
 
-        WindowManager.LayoutParams params = getLayoutParams(editMode);
-        mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
-        mWindowManager.addView(mView, params);
+        mWindowManager.addView(mView, getLayoutParams(editMode));
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_BATTERY_CHANGED);
         registerReceiver(broadcastReceiver, filter);
 
-        Log.v(TemperatureLayerActivity.TAG,
+        Log.i(TemperatureLayerActivity.TAG,
                 "TemperatureLayerService started : id=" + startId + " with "
                         + intent);
 
@@ -268,7 +298,7 @@ public class TemperatureLayerService extends Service {
 
         super.onDestroy();
 
-        Log.v(TemperatureLayerActivity.TAG, "Service stopped");
+        Log.i(TemperatureLayerActivity.TAG, "Service stopped");
     }
 
     @Override
@@ -286,12 +316,11 @@ public class TemperatureLayerService extends Service {
                 String temperatureString = getTemperatureAsString(mConfig,
                         temperature);
 
-                TextView currentTemperatureText =
-                    (TextView)mView.findViewById(R.id.currentTemperature);
-                if (currentTemperatureText.getText().equals(temperatureString)) {
-                	return;
+                if (mCurrentTemperatureText != null &&
+                        mCurrentTemperatureText.getText().equals(temperatureString)) {
+                    return;
                 }
-                currentTemperatureText.setText(temperatureString);
+                mCurrentTemperatureText.setText(temperatureString);
                 Log.v(TemperatureLayerActivity.TAG, "current : "
                         + temperatureString);
 
