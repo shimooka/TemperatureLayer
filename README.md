@@ -29,11 +29,15 @@ About display position
 - Touch 'Position' menu in settings, enter '**edit**' mode
 - In the edit mode, the temperature text color will be displayed in **red**
 - **Swipe** to move the temperature text
-- **Two-finger touch** to exit edit mode
+- **Two-finger touch** or **double touch** to exit edit mode
 
 Limitation in edit mode
 --
 If swipe up and up, the temperature text will go under the status bar (and you will not see the text). This is NOT a bug. When you exit edit mode, the text will display collectly.
+
+Other Limitation
+--
+If uncheck 'Show notifications' in the system settings, notifications and explanation toasts in 'edit' mode from Temperature Layer will not be shown.
 
 Screen capture
 --------------
@@ -48,6 +52,7 @@ This application use following libraries. Thanks for author's great works !
 
 Releases
 --------
+- 2014/05/20 ver.1.0.4 - TWO-FINGER TOUCH or DOUBLE TAP to exit 'edit' mode in display position setting, fixed bugs
 - 2014/05/16 ver.1.0.3 - New display position setting, show/hide icon on the status bar, fixed bugs
 - 2014/05/09 ver.1.0.2 - added high temperature alert
 - 2013/07/26 ver.1.0.1 - added font chooser and notification
