@@ -83,6 +83,7 @@ public final class TemperatureLayerConfig {
                             mContext.getResources().getColor(
                                     R.color.default_color))
                     .putString(KEY_ALERT_SOUND, Settings.System.DEFAULT_NOTIFICATION_URI.toString())
+//                    .putBoolean(KEY_VIBRATION, false)
                     .putBoolean(KEY_INITIALIZED, true).commit();
         }
     }

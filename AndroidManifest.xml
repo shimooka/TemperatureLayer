@@ -16,8 +16,8 @@
  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.doyouphp.android.temperaturelayer"
-    android:versionCode="10402140520"
-    android:versionName="1.0.4" >
+    android:versionCode="10501150702"
+    android:versionName="1.0.5" >
 
     <uses-sdk
         android:minSdkVersion="5"
@@ -25,6 +25,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"

@@ -52,6 +52,7 @@ This application use following libraries. Thanks for author's great works !
 
 Releases
 --------
+- 2015/07/02 ver.1.0.5 - fixed bugs and added READ_EXTERNAL_STORAGE permission
 - 2014/05/20 ver.1.0.4 - TWO-FINGER TOUCH or DOUBLE TAP to exit 'edit' mode in display position setting, fixed bugs
 - 2014/05/16 ver.1.0.3 - New display position setting, show/hide icon on the status bar, fixed bugs
 - 2014/05/09 ver.1.0.2 - added high temperature alert

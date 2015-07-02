@@ -31,7 +31,7 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Copyright &#169; 2013,2014;\nHideyuki SHIMOOKA\n&lt;shimooka@doyouphp.jp&gt;"
+        android:text="Copyright &#169; 2013,2014,2015;\nHideyuki SHIMOOKA\n&lt;shimooka@doyouphp.jp&gt;"
         android:padding="10sp"
         android:gravity="center_horizontal"
         android:textAlignment="center"/>

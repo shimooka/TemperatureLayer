@@ -212,7 +212,7 @@ public class SettingActivity extends PreferenceActivity {
             summary = ringtone.getTitle(this);
             requireRestart = false;
         } else if (key.equals(TemperatureLayerConfig.KEY_VIBRATION)) {
-            summary = config.isAlert() ? getString(R.string.vibration_yes)
+            summary = config.withVibration() ? getString(R.string.vibration_yes)
                             : getString(R.string.vibration_no);
             requireRestart = false;
         }
